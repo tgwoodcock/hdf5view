@@ -46,7 +46,7 @@ hdf5view is designed to be platform independent.
 
 #### **Qt API Bindings**
 
-One of [pyqt5](https://www.riverbankcomputing.com/software/pyqt/), [pyside2](https://pyside.org), [pyqt6](https://www.riverbankcomputing.com/software/pyqt/) or [pyside6](https://pyside.org) is required in order to be able to run hdf5view. Please install one of these e.g. with pip:
+One of [pyqt5](https://www.riverbankcomputing.com/software/pyqt/), [pyside2](https://pyside.org), [pyqt6](https://www.riverbankcomputing.com/software/pyqt/) or [pyside6](https://pyside.org) is required in order to be able to run hdf5view. Please install any one of these, e.g. with pip:
 
 ```
 pip install pyqt5
@@ -152,20 +152,42 @@ sudo pip3 uninstall hdf5view
 
 #### **Context menu**
 
-A particularly useful way to use hdf5view is to add an entry to the context menu. This way, you can right click on an HDF5 file and select "Open with hdf5view" from the menu.
+A particularly useful way to use hdf5view is to add an entry to the context menu. This way, you can right-click on an HDF5 file and select "Open with hdf5view" from the menu.
 
-On Windows, to get "Open with hdf5view" on the right click context menu, we need to modify the registy. Run the registry editor (regedit) as an administrator, then add this command:
+On Windows, to get "Open with hdf5view" on the right click context menu, we need to modify the registy. To do this, please follow these 8 steps:
 
-`C:\Program Files\PythonXXX\Scripts\hdf5view.exe -f "%1"`
+1. Run the registry editor (regedit) as an administrator
+2. Navigate to `Computer\HKEY_CLASSES_ROOT\*\shell`
+3. Right-click on `shell` and select `New > Key`
+4. Name the new key `Open with hdf5view`
+5. Right-click on `Open with hdf5view` and select `New > Key`
+6. Name the new key `command`
 
-to a new key "Open with hdf5view" in the registry under `HKEY_CLASSES_ROOT\*\shell`. Replace XXX with the number of your Python version *e.g.* 38 for Python38.
+The directory structure should now look like this:
 
-**Note:** enclosing %1 in quotes (as above) `"%1"` ensures that filenames including
-spaces are passed correctly to hdf5view.
+```
+-- Computer
+    |-- HKEY_CLASSES_ROOT
+      |-- *
+         |-- shell
+            |-- Open with hdf5view
+               |-- command
+```
 
-If you want to add the icon to the context menu as well, right click on the
-"Open with hdf5view" key and select new String Value. Call it "Icon" and
-then set the value to the path to the hdf5view icon e.g. `C:\Program Files\PythonXXX\Lib\site-packages\hdf5view\resources\images\hdf5view.ico`
+7. Click on `command` to select it. In the right-hand window, you should see a table with 3 columns (Name, Type and Data). Right-click on the first entry under the `Name` column and select `Modify`. Now
+find the box `value data:` and enter the path to `hdf5view.exe` in the Scripts folder of your Python distribution followed by `-f "%1"`. This should look something like this:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `C:\Program Files\PythonXXX\Scripts\hdf5view.exe -f "%1"` 
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (replace XXX with the number of your Python version *e.g.* 312 for Python312). Finally select `OK`.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Note:** enclosing %1 in quotes (as above) `"%1"` ensures that filenames including spaces are passed correctly to hdf5view.
+
+8. If you want to add the icon to the context menu as well, right click on the key `Open with hdf5view` key and select `New > String Value`. In the right-hand window, right-click on the entry in the `Name` column and and select `Modify`. Set the `value name:` to `Icon`. Finally set the `value data:` to the path to the hdf5view icon as a string, e.g.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `"C:\Program Files\PythonXXX\Lib\site-packages\hdf5view\resources\images\hdf5view.ico"`
+
+Now you can right-click on any HDF5 file and open it with hdf5view.
 
 <br>
 
