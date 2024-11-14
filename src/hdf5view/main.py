@@ -1,34 +1,29 @@
-# -*- coding: utf-8 -*-
+"""
+Contains the main application entry point or command line
+interface and defines the paths for the application to
+find its resources.
+"""
 
+import argparse
 import os
 import sys
-import argparse
+
 # import traceback
-
-# to force qtpy to use a particular Qt binding, uncomment the line below,
-# and set the string to your preferred binding i.e. 'pyqt5', 'pyside2',
-# 'pyqt6' or 'pyside6'. Otherwise, qtpy will take the first available of these.
-# os.environ['QT_API'] = 'pyqt5'
-
 import qtpy
-os.environ['PYQTGRAPH_QT_LIB'] = qtpy.API_NAME
-
-
 from qtpy.QtCore import (
     Qt,
 )
-
 from qtpy.QtGui import (
     QIcon,
 )
-
 from qtpy.QtWidgets import (
     QApplication,
 )
 
+os.environ["PYQTGRAPH_QT_LIB"] = qtpy.API_NAME
+
 from . import __version__
 from .mainwindow import MainWindow
-
 
 # def my_excepthook(e_type, value, tb):
 #     """
@@ -44,16 +39,15 @@ from .mainwindow import MainWindow
 
 basedir = os.path.dirname(__file__)
 resource_path = os.path.join(basedir, "resources", "images")
-qtpy.QtCore.QDir.addSearchPath('icons', resource_path)
+qtpy.QtCore.QDir.addSearchPath("icons", resource_path)
 
 
 def main():
-    """
-    Main application entry point
-    """
+    """Define the main application entry point (cli)."""
     parser = argparse.ArgumentParser()
-    parser.add_argument('--version', action='version',
-                        version=f'%(prog)s {__version__}')
+    parser.add_argument(
+        "--version", action="version", version=f"%(prog)s {__version__}"
+    )
     parser.add_argument("-f", "--file", type=str, required=False)
     args = parser.parse_args()
 
@@ -62,9 +56,9 @@ def main():
         QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
 
     app = QApplication(sys.argv)
-    app.setOrganizationName('hdf5view')
-    app.setApplicationName('hdf5view')
-    app.setWindowIcon(QIcon('icons:hdf5view.svg'))
+    app.setOrganizationName("hdf5view")
+    app.setApplicationName("hdf5view")
+    app.setWindowIcon(QIcon("icons:hdf5view.svg"))
 
     window = MainWindow(app)
     window.show()
@@ -76,5 +70,5 @@ def main():
     sys.exit(app.exec_())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

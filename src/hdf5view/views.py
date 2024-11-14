@@ -1,19 +1,20 @@
-# -*- coding: utf-8 -*-
 """
-This module contains the main HDF5 container widget and implementations
+Contains the main HDF5 container widget and implementations
 of QAbstractItemView (ImageView and PlotView), which allow images
 and y(x) plots to be shown.
 """
-from qtpy.QtCore import (
-    Qt,
-    QModelIndex,
-)
 
+import h5py
+import psutil
+import pyqtgraph as pg
+from qtpy.QtCore import (
+    QModelIndex,
+    Qt,
+)
 from qtpy.QtGui import (
     QFont,
     # QKeySequence,
 )
-
 from qtpy.QtWidgets import (
     QAbstractItemView,
     # QAction,
@@ -22,35 +23,28 @@ from qtpy.QtWidgets import (
     # QMainWindow,
     QMessageBox,
     QScrollBar,
-    QTableView,
     QTabBar,
+    QTableView,
     QTabWidget,
     QTreeView,
     QVBoxLayout,
     QWidget,
 )
 
-import pyqtgraph as pg
-import psutil
-import h5py
-
 from .models import (
     AttributesTableModel,
-    DataTableModel,
     DatasetTableModel,
+    DataTableModel,
     DimsTableModel,
-    TreeModel,
     ImageModel,
     PlotModel,
+    TreeModel,
 )
 
 
-
-
 class HDF5Widget(QWidget):
-    """
-    Main HDF5 view container widget
-    """
+    """Main HDF5 view container widget."""
+
     def __init__(self, hdf):
         super().__init__()
 
@@ -109,7 +103,7 @@ class HDF5Widget(QWidget):
         self.tabs.setTabPosition(QTabWidget.South)
         self.tabs.setTabsClosable(True)
 
-        self.tabs.addTab(self.data_view, 'Table')
+        self.tabs.addTab(self.data_view, "Table")
         self.tabs.tabBar().setTabButton(0, QTabBar.RightSide, None)
         self.tabs.tabCloseRequested.connect(self.handle_close_tab)
 
@@ -122,7 +116,7 @@ class HDF5Widget(QWidget):
 
         # save the current dims state of each tab so that it can be
         # restored when the tab is changed
-        self.tab_dims = {id(self.tabs.widget(0)) : list(self.dims_model.shape)}
+        self.tab_dims = {id(self.tabs.widget(0)): list(self.dims_model.shape)}
 
         # container to save the current node (selected node of the tree)
         # for each tab so that it can be restored when the tab is changed.
@@ -138,11 +132,11 @@ class HDF5Widget(QWidget):
         self.init_signals()
 
     def init_signals(self):
-        """
-        Initialise the view signals
-        """
+        """Initialise the view signals."""
         # Update the table views when a tree node is selected
-        self.tree_view.selectionModel().selectionChanged.connect(self.handle_selection_changed)
+        self.tree_view.selectionModel().selectionChanged.connect(
+            self.handle_selection_changed
+        )
 
         # Dynamically populate more of the tree items when
         # selected to keep memory usage at a minimum.
@@ -152,12 +146,8 @@ class HDF5Widget(QWidget):
         self.tabs.currentChanged.connect(self.handle_tab_changed)
         self.dims_model.dataChanged.connect(self.handle_dims_data_changed)
 
-
-
     def close_file(self):
-        """
-        Close the hdf5 file and clean up
-        """
+        """Close the hdf5 file and clean up."""
         for view in self.image_views:
             view.close()
         self.hdf.close()
@@ -167,9 +157,7 @@ class HDF5Widget(QWidget):
     #
 
     def handle_dims_data_changed(self, topLeft, bottomRight, roles):
-        """
-        Set the dimensions to display in the table
-        """
+        """Set the dimensions to display in the table."""
         id_cw = id(self.tabs.currentWidget())
 
         if isinstance(self.tabs.currentWidget(), QTableView):
@@ -185,12 +173,8 @@ class HDF5Widget(QWidget):
 
         self.tab_dims[id_cw] = list(self.dims_model.shape)
 
-
-
-
     def handle_selection_changed(self, selected, deselected):
-        """
-        When selection changes on the tree view
+        """When selection changes on the tree view
         update the node path on the models and
         refresh the data in the associated table
         views.
@@ -219,10 +203,9 @@ class HDF5Widget(QWidget):
         self.dataset_model.update_node(path)
         self.dataset_view.scrollToTop()
 
-        self.dims_model.update_node(path,
-                                    now_on_PlotView=isinstance(self.tabs.currentWidget(),
-                                                               PlotView)
-                                    )
+        self.dims_model.update_node(
+            path, now_on_PlotView=isinstance(self.tabs.currentWidget(), PlotView)
+        )
         self.dims_view.scrollToTop()
 
         self.data_model.update_node(path)
@@ -242,11 +225,8 @@ class HDF5Widget(QWidget):
         if isinstance(self.tabs.currentWidget(), PlotView):
             self.plot_views[id_cw].update_plot()
 
-
-
     def handle_tab_changed(self):
-        """
-        We need to keep the dims for each tab and reset the dims_view
+        """Keep the dims for each tab and reset the dims_view
         when the tab is changed.
         """
         c_index = self.tree_view.currentIndex()
@@ -261,11 +241,8 @@ class HDF5Widget(QWidget):
         self.dims_model.endResetModel()
         self.dims_model.dataChanged.emit(QModelIndex(), QModelIndex(), [])
 
-
     def add_image(self):
-        """
-        Add a tab to view an image of a dataset in the hdf5 file.
-        """
+        """Add a tab to view an image of a dataset in the hdf5 file."""
         c_index = self.tab_node[id(self.tabs.currentWidget())]
         path = self.tree_model.itemFromIndex(c_index).data(Qt.UserRole)
         self.dims_model.update_node(path)
@@ -281,17 +258,13 @@ class HDF5Widget(QWidget):
         tree_index = self.tree_view.currentIndex()
         self.tab_node[id_iv] = tree_index
 
-        index = self.tabs.addTab(self.image_views[id_iv], 'Image')
+        index = self.tabs.addTab(self.image_views[id_iv], "Image")
         self.tabs.blockSignals(True)
         self.tabs.setCurrentIndex(index)
         self.tabs.blockSignals(False)
 
-
-
     def add_plot(self):
-        """
-        Add a tab to view an plot of a dataset in the hdf5 file.
-        """
+        """Add a tab to view an plot of a dataset in the hdf5 file."""
         c_index = self.tab_node[id(self.tabs.currentWidget())]
         path = self.tree_model.itemFromIndex(c_index).data(Qt.UserRole)
         self.dims_model.update_node(path, now_on_PlotView=True)
@@ -308,16 +281,13 @@ class HDF5Widget(QWidget):
         tree_index = self.tree_view.currentIndex()
         self.tab_node[id_pv] = tree_index
 
-        index = self.tabs.addTab(self.plot_views[id_pv], 'Plot')
+        index = self.tabs.addTab(self.plot_views[id_pv], "Plot")
         self.tabs.blockSignals(True)
         self.tabs.setCurrentIndex(index)
         self.tabs.blockSignals(False)
 
-
     def handle_close_tab(self, index):
-        """
-        Close a tab
-        """
+        """Close a tab."""
         widget = self.tabs.widget(index)
         self.tabs.removeTab(index)
         self.tab_dims.pop(id(widget))
@@ -326,9 +296,9 @@ class HDF5Widget(QWidget):
             self.image_views.pop(id(widget))
         widget.deleteLater()
 
-
     def calculate_memory_ratio(self, path):
-        """
+        """Calculate the memory ratio.
+
         Finds a critical dimension, dim_crit, in bytes
         for the dataset selected and then calculates
         and returns memory_ratio: the ratio of dim_crit
@@ -341,12 +311,10 @@ class HDF5Widget(QWidget):
 
         Returns
         -------
-        memory_ratio : FLOAT
+        Float
             The ratio of the critical dimension of the
             dataset selected, in bytes, to the available
             memory on the sytem.
-
-
         """
         node = self.hdf[path]
 
@@ -363,9 +331,9 @@ class HDF5Widget(QWidget):
 
         return memory_ratio
 
-
     def check_node_size(self, memory_ratio, path):
-        """
+        """Check if memory_ratio > self.memory_ratio_limit.
+
         If memory_ratio > self.memory_ratio_limit, a
         QMessageBox.warning will appear notifying the
         user what percentage of available memory will
@@ -385,17 +353,13 @@ class HDF5Widget(QWidget):
 
         Returns
         -------
-        bool
-            returns True if memory_ratio <= self.memory_ratio_limit
-            if memory_ratio > self.memory_ratio_limit:
-                returns True if the user presses "Yes"
-                on the dialog, opting to continue
-                loading the node.
-                returns False if the user presses "No"
-                on the dialog, opting to cancel loading
-                the node and return to the previous
-                selection in the tree.
-
+        Bool
+            Returns True if memory_ratio <= self.memory_ratio_limit
+            If memory_ratio > self.memory_ratio_limit, returns True
+            if the user presses "Yes" on the dialog, opting to continue
+            loading the node. Returns False if the user presses "No"
+            on the dialog, opting to cancel loading the node and return
+            to the previous selection in the tree.
         """
         if memory_ratio > self.memory_ratio_limit:
             msg = f"Loading {path} would consume {int(100*memory_ratio):d}%"
@@ -410,14 +374,9 @@ class HDF5Widget(QWidget):
                 defaultButton=QMessageBox.No,
             )
 
-            if button == QMessageBox.Yes:
-                return True
-
-            return False
+            return button == QMessageBox.Yes
 
         return True
-
-
 
 
 class ImageView(QAbstractItemView):
@@ -442,9 +401,9 @@ class ImageView(QAbstractItemView):
         self.dims_model = dims_model
 
         pg.setConfigOptions(antialias=True)
-        pg.setConfigOption('background', 'w')
-        pg.setConfigOption('foreground', 'k')
-        pg.setConfigOption('leftButtonPan', False)
+        pg.setConfigOption("background", "w")
+        pg.setConfigOption("foreground", "k")
+        pg.setConfigOption("leftButtonPan", False)
 
         # Main graphics layout widget
         graphics_layout_widget = pg.GraphicsLayoutWidget()
@@ -455,7 +414,7 @@ class ImageView(QAbstractItemView):
         self.viewbox.invertY(True)
 
         # Add image item to view box
-        self.image_item = pg.ImageItem(border='w')
+        self.image_item = pg.ImageItem(border="w")
         self.viewbox.addItem(self.image_item)
         self.image_item.setOpts(axisOrder="row-major")
 
@@ -474,13 +433,13 @@ class ImageView(QAbstractItemView):
 
         self.init_signals()
 
-
     def init_signals(self):
+        """Initialise the mouse and scrollbar signals."""
         self.image_item.scene().sigMouseMoved.connect(self.handle_mouse_moved)
         self.scrollbar.valueChanged.connect(self.handle_scroll)
 
-
     def update_image(self):
+        """Update the image displayed."""
         if isinstance(self.model().image_view, type(None)):
             if self.viewbox.isVisible():
                 self.viewbox.setVisible(False)
@@ -522,20 +481,15 @@ class ImageView(QAbstractItemView):
             self.scrollbar.setVisible(False)
             self.scrollbar.blockSignals(False)
 
-
     def handle_scroll(self, value):
-        """
-        Change the image frame on scroll
-        """
+        """Change the image frame on scroll."""
         self.dims_model.beginResetModel()
         self.dims_model.shape[0] = str(value)
         self.dims_model.endResetModel()
         self.dims_model.dataChanged.emit(QModelIndex(), QModelIndex(), [])
 
-
     def handle_mouse_moved(self, pos):
-        """
-        Update the cursor position when the mouse moves
+        """Update the cursor position when the mouse moves
         in the image scene.
         """
         if self.viewbox.isVisible():
@@ -550,29 +504,31 @@ class ImageView(QAbstractItemView):
             y = int(scene_pos.y())
 
             if 0 <= x < max_x and 0 <= y < max_y:
-                I = self.model().image_view[y,x]
+                iv = self.model().image_view[y, x]
                 msg1 = f"X={x} Y={y}, value="
                 try:
-                    msg2 = f"{I:.3e}"
+                    msg2 = f"{iv:.3e}"
                 except TypeError:
                     try:
-                        msg2 = f"[{I[0]:.3e}, {I[1]:.3e}, {I[2]:.3e}, {I[3]:.3e}]"
+                        msg2 = f"[{iv[0]:.3e}, {iv[1]:.3e}, {iv[2]:.3e}, {iv[3]:.3e}]"
                     except IndexError:
-                        msg2 = f"[{I[0]:.3e}, {I[1]:.3e}, {I[2]:.3e}]"
+                        msg2 = f"[{iv[0]:.3e}, {iv[1]:.3e}, {iv[2]:.3e}]"
                 self.window().status.showMessage(msg1 + msg2)
                 self.viewbox.setCursor(Qt.CrossCursor)
             else:
-                self.window().status.showMessage('')
+                self.window().status.showMessage("")
                 self.viewbox.setCursor(Qt.ArrowCursor)
 
-
     def horizontalOffset(self):
+        """Return zero."""
         return 0
 
     def verticalOffset(self):
+        """Return zero."""
         return 0
 
     def moveCursor(self, cursorAction, modifiers):
+        """Return a QModelIndex."""
         return QModelIndex()
 
 
@@ -586,6 +542,7 @@ class PlotView(QAbstractItemView):
 
     TODO: Multiplots
     """
+
     def __init__(self, model, dims_model):
         super().__init__()
 
@@ -593,9 +550,9 @@ class PlotView(QAbstractItemView):
         self.dims_model = dims_model
 
         pg.setConfigOptions(antialias=True)
-        pg.setConfigOption('background', 'w')
-        pg.setConfigOption('foreground', 'k')
-        pg.setConfigOption('leftButtonPan', False)
+        pg.setConfigOption("background", "w")
+        pg.setConfigOption("foreground", "k")
+        pg.setConfigOption("leftButtonPan", False)
 
         # Main graphics layout widget
         graphics_layout_widget = pg.GraphicsLayoutWidget()
@@ -619,16 +576,16 @@ class PlotView(QAbstractItemView):
 
         # self.pen = (0,0,200)
         self.pen = None
-        self.symbolBrush = (0,0,255)
-        self.symbolPen = 'k'
-
+        self.symbolBrush = (0, 0, 255)
+        self.symbolPen = "k"
 
     def init_signals(self):
+        """Initialise the mouse and scrollbar signals."""
         self.plot_item.scene().sigMouseMoved.connect(self.handle_mouse_moved)
         self.scrollbar.valueChanged.connect(self.handle_scroll)
 
-
     def update_plot(self):
+        """Update the plot shown."""
         if isinstance(self.model().plot_view, type(None)):
             self.plot_item.setVisible(False)
             self.scrollbar.blockSignals(True)
@@ -637,28 +594,25 @@ class PlotView(QAbstractItemView):
 
             return
 
-
         self.plot_item.setTitle(None)
         self.plot_item.enableAutoRange()
 
         self.set_up_plot()
 
         self.plot_item.showAxis("top")
-        self.plot_item.showAxis('right')
+        self.plot_item.showAxis("right")
         for i in ["bottom", "top", "left", "right"]:
             ax = self.plot_item.getAxis(i)
-            ax.setPen(pg.mkPen(color='k', width=2))
-            ax.setStyle(**{"tickAlpha" : 255,
-                           "tickLength": -8})
+            ax.setPen(pg.mkPen(color="k", width=2))
+            ax.setStyle(**{"tickAlpha": 255, "tickLength": -8})
         for i in ["bottom", "left"]:
             lab_font = QFont("Arial")
             lab_font.setPointSize(11)
             ax = self.plot_item.getAxis(i)
-            ax.setTextPen('k')
-            ax.setStyle(**{'tickFont':lab_font})
+            ax.setTextPen("k")
+            ax.setStyle(**{"tickFont": lab_font})
         for i in ["top", "right"]:
-            self.plot_item.getAxis(i).setStyle(**{'showValues':False})
-
+            self.plot_item.getAxis(i).setStyle(**{"showValues": False})
 
         if not self.plot_item.isVisible():
             self.plot_item.setVisible(True)
@@ -689,51 +643,62 @@ class PlotView(QAbstractItemView):
             self.scrollbar.setVisible(False)
             self.scrollbar.blockSignals(False)
 
-
     def set_up_plot(self):
+        """Set up the plot shown including the axis labels."""
         c_n = self.model().compound_names
 
         if c_n:
             if len(c_n) == 1:
                 # plot a single column of data against the index
-                self.plot_item.plot(self.model().plot_view[c_n[0]],
-                                    pen=self.pen,
-                                    symbolBrush=self.symbolBrush,
-                                    symbolPen=self.symbolPen,
-                                    clear=True
-                                    )
+                self.plot_item.plot(
+                    self.model().plot_view[c_n[0]],
+                    pen=self.pen,
+                    symbolBrush=self.symbolBrush,
+                    symbolPen=self.symbolPen,
+                    clear=True,
+                )
 
             elif len(c_n) == 2:
                 # plot two columns of data against each other
-                self.plot_item.plot(self.model().plot_view[c_n[0]],
-                                    self.model().plot_view[c_n[1]],
-                                    pen=self.pen,
-                                    symbolBrush=self.symbolBrush,
-                                    symbolPen=self.symbolPen,
-                                    clear=True
-                                    )
+                self.plot_item.plot(
+                    self.model().plot_view[c_n[0]],
+                    self.model().plot_view[c_n[1]],
+                    pen=self.pen,
+                    symbolBrush=self.symbolBrush,
+                    symbolPen=self.symbolPen,
+                    clear=True,
+                )
 
         else:
-            self.plot_item.plot(self.model().plot_view,
-                                pen=self.pen,
-                                symbolBrush=self.symbolBrush,
-                                symbolPen=self.symbolPen,
-                                clear=True
-                                )
+            self.plot_item.plot(
+                self.model().plot_view,
+                pen=self.pen,
+                symbolBrush=self.symbolBrush,
+                symbolPen=self.symbolPen,
+                clear=True,
+            )
 
         two_cols = self.model().column_count == 2
-        s_loc = [i if isinstance(j, slice) else -1 for i, j in enumerate(self.model().dims)]
+        s_loc = [
+            i if isinstance(j, slice) else -1 for i, j in enumerate(self.model().dims)
+        ]
         s_idx = [i for i in s_loc if i != -1]
         if two_cols:
             # here we are plotting two columns of data against each other
             if c_n:
-                self.plot_item.setTitle(self.model().node.name.split('/')[-1])
+                self.plot_item.setTitle(self.model().node.name.split("/")[-1])
                 self.plot_item.titleLabel.item.setFont(QFont("Arial", 14, QFont.Bold))
-                d_slice = f" [{self.dims_model.shape[0]}]" if not self.dims_model.shape[0] == ":" else ""
+                d_slice = (
+                    f" [{self.dims_model.shape[0]}]"
+                    if self.dims_model.shape[0] != ":"
+                    else ""
+                )
                 x_label = f"{c_n[0]}{d_slice}"
                 y_label = f"{c_n[1]}{d_slice}"
             else:
-                q = list(range(self.model().node.shape[s_idx[1]]))[self.model().dims[s_idx[1]]]
+                q = list(range(self.model().node.shape[s_idx[1]]))[
+                    self.model().dims[s_idx[1]]
+                ]
                 w_x = list(self.dims_model.shape)
                 w_x[s_idx[1]] = str(q[0])
                 w_y = list(self.dims_model.shape)
@@ -745,39 +710,40 @@ class PlotView(QAbstractItemView):
                 y_label = f"{self.model().node.name.split('/')[-1]}{y_slice}"
         else:
             # here only one column of data is plotted (it may be sliced)
-            x_label = 'Index'
+            x_label = "Index"
             if c_n:
-                self.plot_item.setTitle(self.model().node.name.split('/')[-1])
+                self.plot_item.setTitle(self.model().node.name.split("/")[-1])
                 self.plot_item.titleLabel.item.setFont(QFont("Arial", 14, QFont.Bold))
-                y_slice = f" [{self.dims_model.shape[0]}]" if not self.dims_model.shape[0] == ":" else ""
+                y_slice = (
+                    f" [{self.dims_model.shape[0]}]"
+                    if self.dims_model.shape[0] != ":"
+                    else ""
+                )
                 y_label = f"{c_n[0]}{y_slice}"
             else:
-                y_slice = f" [{', '.join(self.dims_model.shape)}]" if not self.dims_model.shape == [":"] else ""
+                y_slice = (
+                    f" [{', '.join(self.dims_model.shape)}]"
+                    if self.dims_model.shape != [":"]
+                    else ""
+                )
                 y_label = f"{self.model().node.name.split('/')[-1]}{y_slice}"
 
-        self.plot_item.setLabel('bottom',
-                                x_label,
-                                **{'font-size':'14pt', 'font':'Arial'}
-                                )
-        self.plot_item.setLabel('left',
-                                y_label,
-                                **{'font-size':'14pt', 'font':'Arial'}
-                                )
-
+        self.plot_item.setLabel(
+            "bottom", x_label, **{"font-size": "14pt", "font": "Arial"}
+        )
+        self.plot_item.setLabel(
+            "left", y_label, **{"font-size": "14pt", "font": "Arial"}
+        )
 
     def handle_scroll(self, value):
-        """
-        Change the image frame on scroll
-        """
+        """Change the image frame on scroll."""
         self.dims_model.beginResetModel()
         self.dims_model.shape[0] = str(value)
         self.dims_model.endResetModel()
         self.dims_model.dataChanged.emit(QModelIndex(), QModelIndex(), [])
 
-
     def handle_mouse_moved(self, pos):
-        """
-        Update the cursor position when the mouse moves
+        """Update the cursor position when the mouse moves
         in the image scene.
         """
         if self.plot_item.isVisible():
@@ -796,15 +762,17 @@ class PlotView(QAbstractItemView):
                 self.window().status.showMessage(msg1)
                 vb.setCursor(Qt.CrossCursor)
             else:
-                self.window().status.showMessage('')
+                self.window().status.showMessage("")
                 vb.setCursor(Qt.ArrowCursor)
 
-
     def horizontalOffset(self):
+        """Return zero."""
         return 0
 
     def verticalOffset(self):
+        """Return zero."""
         return 0
 
     def moveCursor(self, cursorAction, modifiers):
+        """Return a QModelIndex."""
         return QModelIndex()

@@ -1,52 +1,48 @@
-# -*- coding: utf-8 -*-
 """
-This module contains the various models used in the Qt model-view
+Contains the various models used in the Qt model-view
 methodology.
 """
 
 import h5py
 import qtpy
-
 from qtpy.QtCore import (
-    QAbstractTableModel,
     QAbstractItemModel,
+    QAbstractTableModel,
     QModelIndex,
     Qt,
 )
-
 from qtpy.QtGui import (
     QBrush,
-    QIcon,
     QColor,
-
+    QIcon,
     QStandardItem,
     QStandardItemModel,
 )
 
+INVALID_QModelIndex = QModelIndex()
 
 
 class TreeModel(QStandardItemModel):
-    """
-    Tree model showing the structure of the HDF5 file.
-    """
+    """Tree model showing the structure of the HDF5 file."""
 
     def __init__(self, hdf):
         super().__init__()
 
         self.hdf = hdf
         self.setColumnCount(3)
-        self.setHorizontalHeaderLabels(['Objects', 'Attrs', 'Dataset'])
+        self.setHorizontalHeaderLabels(["Objects", "Attrs", "Dataset"])
 
         # Add the root node and immediate children
-        root = self.add_node(self, '/', self.hdf)
+        root = self.add_node(self, "/", self.hdf)
         for name, node in self.hdf.items():
             self.add_node(root, name, node)
 
     def add_node(self, parent_item, name, node):
-        if name != '/':
-            path = f'{parent_item.data(Qt.UserRole)}/{name}'
+        """Return a tree item describing a node."""
+        if name != "/":
+            path = f"{parent_item.data(Qt.UserRole)}/{name}"
         else:
-            path = '/'
+            path = "/"
 
         tree_item = QStandardItem(name)
         tree_item.setData(path, Qt.UserRole)
@@ -56,33 +52,31 @@ class TreeModel(QStandardItemModel):
         if num_attrs > 0:
             attrs_item = QStandardItem(str(num_attrs))
         else:
-            attrs_item = QStandardItem('')
+            attrs_item = QStandardItem("")
 
-        attrs_item.setForeground(QBrush((Qt.darkGray)))
+        attrs_item.setForeground(QBrush(Qt.darkGray))
 
         if isinstance(node, h5py.Dataset):
-            tree_item.setIcon(QIcon('icons:dataset.svg'))
+            tree_item.setIcon(QIcon("icons:dataset.svg"))
             dataset_item = QStandardItem(str(node.shape))
 
         elif isinstance(node, h5py.Group):
-            tree_item.setIcon(QIcon('icons:folder.svg'))
-            dataset_item = QStandardItem('')
+            tree_item.setIcon(QIcon("icons:folder.svg"))
+            dataset_item = QStandardItem("")
 
-        dataset_item.setForeground(QBrush((Qt.darkGray)))
+        dataset_item.setForeground(QBrush(Qt.darkGray))
 
         parent_item.appendRow([tree_item, attrs_item, dataset_item])
         return tree_item
 
     def handle_expanded(self, index):
-        """
-        Dynamically populate the treeview
-        """
+        """Dynamically populate the treeview."""
         item = self.itemFromIndex(index)
 
         if not item.hasChildren():
             return
 
-        item.setIcon(QIcon('icons:folder-open.svg'))
+        item.setIcon(QIcon("icons:folder-open.svg"))
 
         for row in range(item.rowCount()):
             child_item = item.child(row, 0)
@@ -98,11 +92,9 @@ class TreeModel(QStandardItemModel):
                     self.add_node(child_item, name, node)
 
     def handle_collapsed(self, index):
-        """
-        Update the icon when collapsing a group
-        """
+        """Update the icon when collapsing a group."""
         item = self.itemFromIndex(index)
-        item.setIcon(QIcon('icons:folder.svg'))
+        item.setIcon(QIcon("icons:folder.svg"))
 
 
 class AttributesTableModel(QAbstractTableModel):
@@ -110,7 +102,8 @@ class AttributesTableModel(QAbstractTableModel):
     Model containing any attributes of a dataset in
     the HDF5 file.
     """
-    HEADERS = ('Name', 'Value', 'Type')
+
+    HEADERS = ("Name", "Value", "Type")
 
     def __init__(self, hdf):
         super().__init__()
@@ -121,9 +114,7 @@ class AttributesTableModel(QAbstractTableModel):
         self.row_count = 0
 
     def update_node(self, path):
-        """
-        Update the current node path
-        """
+        """Update the current node path."""
         self.beginResetModel()
         self.node = self.hdf[path]
 
@@ -133,13 +124,16 @@ class AttributesTableModel(QAbstractTableModel):
         self.row_count = len(self.keys)
         self.endResetModel()
 
-    def rowCount(self, parent=QModelIndex()):
+    def rowCount(self, parent=INVALID_QModelIndex):
+        """Return the number of rows."""
         return self.row_count
 
-    def columnCount(self, parent=QModelIndex()):
+    def columnCount(self, parent=INVALID_QModelIndex):
+        """Return the number of columns."""
         return self.column_count
 
     def headerData(self, section, orientation, role):
+        """Return data concerning the header."""
         if role == Qt.DisplayRole:
             if orientation == Qt.Horizontal:
                 return self.HEADERS[section]
@@ -147,7 +141,7 @@ class AttributesTableModel(QAbstractTableModel):
                 return str(section)
 
     def data(self, index, role=Qt.DisplayRole):
-
+        """Return attributes properties for display."""
         if index.isValid():
             column = index.column()
             row = index.row()
@@ -172,7 +166,8 @@ class DatasetTableModel(QAbstractTableModel):
     'chunks', 'compression', 'shuffle', 'fletcher32'
     and 'scaleoffset'.
     """
-    HEADERS = ('Name', 'Value')
+
+    HEADERS = ("Name", "Value")
 
     def __init__(self, hdf):
         super().__init__()
@@ -183,9 +178,7 @@ class DatasetTableModel(QAbstractTableModel):
         self.row_count = 0
 
     def update_node(self, path):
-        """
-        Update the current node path
-        """
+        """Update the current node path."""
         self.keys = []
         self.values = []
 
@@ -197,44 +190,61 @@ class DatasetTableModel(QAbstractTableModel):
             return
 
         self.keys = (
-            'name', 'dtype', 'ndim', 'shape',
-            'maxshape', 'chunks', 'compression', 'shuffle',
-            'fletcher32', 'scaleoffset',
+            "name",
+            "dtype",
+            "ndim",
+            "shape",
+            "maxshape",
+            "chunks",
+            "compression",
+            "shuffle",
+            "fletcher32",
+            "scaleoffset",
         )
 
         compound_names = self.node.dtype.names
 
         if compound_names:
             self.values = (
-                str(self.node.name), str(self.node.dtype), str(self.node.ndim),
+                str(self.node.name),
+                str(self.node.dtype),
+                str(self.node.ndim),
                 f"{self.node.shape}  (ncols={len(compound_names)})",
                 str(self.node.maxshape),
-                str(self.node.chunks), str(self.node.compression),
-                str(self.node.shuffle), str(self.node.fletcher32),
+                str(self.node.chunks),
+                str(self.node.compression),
+                str(self.node.shuffle),
+                str(self.node.fletcher32),
                 str(self.node.scaleoffset),
             )
 
         else:
             self.values = (
-                str(self.node.name), str(self.node.dtype), str(self.node.ndim),
-                str(self.node.shape), str(self.node.maxshape),
-                str(self.node.chunks), str(self.node.compression),
-                str(self.node.shuffle), str(self.node.fletcher32),
+                str(self.node.name),
+                str(self.node.dtype),
+                str(self.node.ndim),
+                str(self.node.shape),
+                str(self.node.maxshape),
+                str(self.node.chunks),
+                str(self.node.compression),
+                str(self.node.shuffle),
+                str(self.node.fletcher32),
                 str(self.node.scaleoffset),
             )
-
 
         self.row_count = len(self.keys)
         self.endResetModel()
 
-
-    def rowCount(self, parent=QModelIndex()):
+    def rowCount(self, parent=INVALID_QModelIndex):
+        """Return the number of rows."""
         return self.row_count
 
-    def columnCount(self, parent=QModelIndex()):
+    def columnCount(self, parent=INVALID_QModelIndex):
+        """Return the number of columns."""
         return self.column_count
 
     def headerData(self, section, orientation, role):
+        """Return data concerning the header."""
         if role == Qt.DisplayRole:
             if orientation == Qt.Horizontal:
                 return self.HEADERS[section]
@@ -242,6 +252,7 @@ class DatasetTableModel(QAbstractTableModel):
                 return str(section)
 
     def data(self, index, role=Qt.DisplayRole):
+        """Return dataset properties for display."""
         if index.isValid():
             column = index.column()
             row = index.row()
@@ -253,15 +264,17 @@ class DatasetTableModel(QAbstractTableModel):
                     elif column == 1:
                         return self.values[row]
 
-                if role == Qt.ForegroundRole:
-                    if row == 3 and column == 1 and self.node.dtype.names:
-                        return QColor('red')
+                if (
+                    role == Qt.ForegroundRole
+                    and row == 3
+                    and column == 1
+                    and self.node.dtype.names
+                ):
+                    return QColor("red")
 
 
 class DataTableModel(QAbstractTableModel):
-    """
-    Model containing the data in the dataset in the HDF5 file.
-    """
+    """Model containing the data in the dataset in the HDF5 file."""
 
     def __init__(self, hdf):
         super().__init__()
@@ -276,9 +289,7 @@ class DataTableModel(QAbstractTableModel):
         self.compound_names = None
 
     def update_node(self, path):
-        """
-        Update the current node path
-        """
+        """Update the current node path."""
         self.compound_names = None
 
         self.beginResetModel()
@@ -320,9 +331,9 @@ class DataTableModel(QAbstractTableModel):
         elif self.ndim > 2 and shape[-1] in [3, 4]:
             self.row_count = shape[-3]
             self.column_count = shape[-2]
-            self.dims = tuple(([0] * (self.ndim - 3)) + [slice(None),
-                                                         slice(None),
-                                                         slice(None)])
+            self.dims = tuple(
+                ([0] * (self.ndim - 3)) + [slice(None), slice(None), slice(None)]
+            )
 
         else:
             self.row_count = shape[-2]
@@ -332,13 +343,16 @@ class DataTableModel(QAbstractTableModel):
         self.data_view = self.node[self.dims]
         self.endResetModel()
 
-    def rowCount(self, parent=QModelIndex()):
+    def rowCount(self, parent=INVALID_QModelIndex):
+        """Return the number of rows."""
         return self.row_count
 
-    def columnCount(self, parent=QModelIndex()):
+    def columnCount(self, parent=INVALID_QModelIndex):
+        """Return the number of columns."""
         return self.column_count
 
     def headerData(self, section, orientation, role):
+        """Return data concerning the header."""
         if role == Qt.DisplayRole:
             if orientation == Qt.Horizontal:
                 if self.compound_names:
@@ -354,7 +368,7 @@ class DataTableModel(QAbstractTableModel):
                             w_e = [w_e]
                         return str(w_e[section])
 
-                    s_loc = [i for i,j in enumerate(self.dims) if isinstance(j, slice)]
+                    s_loc = [i for i, j in enumerate(self.dims) if isinstance(j, slice)]
                     if self.ndim > 2:
                         if len(s_loc) >= 2:
                             idx = 1
@@ -377,7 +391,7 @@ class DataTableModel(QAbstractTableModel):
 
                     return str(w_e[section])
 
-                s_loc = [i for i,j in enumerate(self.dims) if isinstance(j, slice)]
+                s_loc = [i for i, j in enumerate(self.dims) if isinstance(j, slice)]
                 if self.ndim > 2:
                     if len(s_loc) >= 1:
                         idx = 0
@@ -390,52 +404,51 @@ class DataTableModel(QAbstractTableModel):
 
         super().headerData(section, orientation, role)
 
-
     def data(self, index, role=Qt.DisplayRole):
-        if index.isValid():
-            if role in (Qt.DisplayRole, Qt.ToolTipRole):
-                if self.compound_names:
-                    name = self.compound_names[index.column()]
-                    if self.data_view.ndim == 0:
-                        try:
-                            q = self.data_view[name].decode()
-                        except AttributeError:
-                            q = str(self.data_view[name])
-                    else:
-                        try:
-                            q = self.data_view[index.row()][name].decode()
-                        except AttributeError:
-                            q = str(self.data_view[index.row()][name])
-
-                    return q
-
-                if self.ndim == 0:
+        """Return table data for display."""
+        if index.isValid() and role in (Qt.DisplayRole, Qt.ToolTipRole):
+            if self.compound_names:
+                name = self.compound_names[index.column()]
+                if self.data_view.ndim == 0:
                     try:
-                        q = self.data_view.decode()
-                    except TypeError:
-                        q = str(self.data_view)
+                        q = self.data_view[name].decode()
+                    except AttributeError:
+                        q = str(self.data_view[name])
                 else:
-                    if self.data_view.ndim == 0:
-                        try:
-                            q = self.data_view.decode()
-                        except AttributeError:
-                            q = str(self.data_view)
-                    elif self.data_view.ndim == 1:
-                        try:
-                            q = self.data_view[index.row()].decode()
-                        except AttributeError:
-                            q = str(self.data_view[index.row()])
-                    elif self.data_view.ndim >= 2:
-                        try:
-                            q = self.data_view[index.row(), index.column()].decode()
-                        except AttributeError:
-                            q = str(self.data_view[index.row(), index.column()])
+                    try:
+                        q = self.data_view[index.row()][name].decode()
+                    except AttributeError:
+                        q = str(self.data_view[index.row()][name])
 
                 return q
 
+            if self.ndim == 0:
+                try:
+                    q = self.data_view.decode()
+                except TypeError:
+                    q = str(self.data_view)
+            else:
+                if self.data_view.ndim == 0:
+                    try:
+                        q = self.data_view.decode()
+                    except AttributeError:
+                        q = str(self.data_view)
+                elif self.data_view.ndim == 1:
+                    try:
+                        q = self.data_view[index.row()].decode()
+                    except AttributeError:
+                        q = str(self.data_view[index.row()])
+                elif self.data_view.ndim >= 2:
+                    try:
+                        q = self.data_view[index.row(), index.column()].decode()
+                    except AttributeError:
+                        q = str(self.data_view[index.row(), index.column()])
+
+            return q
 
     def set_dims(self, dims):
-        """
+        """Set the dimensions of the model.
+
         This function is called if the dimensions in the
         HDF5Widget.dims_view are edited. The dimensions of
         the model are updated to match the input dimensions.
@@ -494,6 +507,7 @@ class ImageModel(QAbstractItemModel):
     Model containing data from the dataset in the HDF5 file,
     in a form suitable for plotting as an image.
     """
+
     def __init__(self, hdf):
         super().__init__()
 
@@ -506,11 +520,8 @@ class ImageModel(QAbstractItemModel):
         self.image_view = None
         self.compound_names = None
 
-
     def update_node(self, path):
-        """
-        Update the current node path
-        """
+        """Update the current node path."""
         self.compound_names = None
 
         self.beginResetModel()
@@ -524,7 +535,7 @@ class ImageModel(QAbstractItemModel):
 
         self.image_view = None
 
-        if not isinstance(self.node, h5py.Dataset) or self.node.dtype == 'object':
+        if not isinstance(self.node, h5py.Dataset) or self.node.dtype == "object":
             self.endResetModel()
             return
 
@@ -555,33 +566,37 @@ class ImageModel(QAbstractItemModel):
         elif self.ndim > 2 and shape[-1] in [3, 4]:
             self.row_count = shape[-3]
             self.column_count = shape[-2]
-            self.dims = tuple(([0] * (self.ndim - 3)) + [slice(None),
-                                                         slice(None),
-                                                         slice(None)])
+            self.dims = tuple(
+                ([0] * (self.ndim - 3)) + [slice(None), slice(None), slice(None)]
+            )
             self.image_view = self.node[self.dims]
 
         else:
             self.row_count = shape[-2]
             self.column_count = shape[-1]
-            self.dims = tuple(([0] * (self.ndim - 2)) + [slice(None),
-                                                         slice(None)])
+            self.dims = tuple(([0] * (self.ndim - 2)) + [slice(None), slice(None)])
             self.image_view = self.node[self.dims]
 
         self.endResetModel()
 
-    def parent(self, childIndex=QModelIndex()):
+    def parent(self, childIndex=INVALID_QModelIndex):
+        """Create and return an index."""
         return self.createIndex()
 
-    def index(self, row, column, parentIndex=QModelIndex()):
+    def index(self, row, column, parentIndex=INVALID_QModelIndex):
+        """Create and return an index."""
         return self.createIndex()
 
-    def rowCount(self, parent=QModelIndex()):
+    def rowCount(self, parent=INVALID_QModelIndex):
+        """Return the number of rows."""
         return self.row_count
 
-    def columnCount(self, parent=QModelIndex()):
+    def columnCount(self, parent=INVALID_QModelIndex):
+        """Return the number of columns."""
         return self.column_count
 
     def headerData(self, section, orientation, role):
+        """Return data concerning the header."""
         if role == Qt.DisplayRole:
             if self.compound_names and orientation == Qt.Horizontal:
                 return self.compound_names[section]
@@ -591,21 +606,21 @@ class ImageModel(QAbstractItemModel):
         super().headerData(section, orientation, role)
 
     def data(self, index, role=Qt.DisplayRole):
-        """
+        """Return None.
+
         This function must be implemented when subclassing
         QAbstractItemModel. As the ImageView class does not need
         this function, an invalid QVariant is returned. The
         constructor QVariant() should not be used in the future
-        so None can be returned instead, as
-        recommended in the docs: https://doc.qt.io/qtforpython-6/considerations.html#qvariant.
+        so None can be returned instead, as recommended in the docs:
+        https://doc.qt.io/qtforpython-6/considerations.html#qvariant.
         """
-        if index.isValid():
-            if role in (Qt.DisplayRole, Qt.ToolTipRole):
-                return None
-
+        if index.isValid() and role in (Qt.DisplayRole, Qt.ToolTipRole):
+            return None
 
     def set_dims(self, dims):
-        """
+        """Set the dimensions of the model.
+
         This function is called if the dimensions in the
         HDF5Widget.dims_view are edited. The dimensions of
         the model are updated to match the input dimensions.
@@ -619,7 +634,7 @@ class ImageModel(QAbstractItemModel):
 
         self.dims = get_dims_from_str(dims)
 
-        if len(self.dims) >= 2 and not self.node.dtype == 'object':
+        if len(self.dims) >= 2 and self.node.dtype != "object":
             self.image_view = self.node[self.dims]
             shape = self.image_view.shape
             if self.image_view.ndim == 2:
@@ -648,6 +663,7 @@ class PlotModel(QAbstractItemModel):
     in a form suitable for plotting as y(x), where x is
     usually an index.
     """
+
     def __init__(self, hdf):
         super().__init__()
 
@@ -660,11 +676,8 @@ class PlotModel(QAbstractItemModel):
         self.plot_view = None
         self.compound_names = None
 
-
     def update_node(self, path):
-        """
-        Update the current node path
-        """
+        """Update the current node path."""
         self.beginResetModel()
 
         self.node = self.hdf[path]
@@ -675,7 +688,7 @@ class PlotModel(QAbstractItemModel):
         self.plot_view = None
         self.compound_names = None
 
-        if not isinstance(self.node, h5py.Dataset) or self.node.dtype == 'object':
+        if not isinstance(self.node, h5py.Dataset) or self.node.dtype == "object":
             self.endResetModel()
             return
 
@@ -719,20 +732,24 @@ class PlotModel(QAbstractItemModel):
         self.plot_view = self.node[self.dims]
         self.endResetModel()
 
-
-    def parent(self, childIndex=QModelIndex()):
+    def parent(self, childIndex=INVALID_QModelIndex):
+        """Create and return an index."""
         return self.createIndex()
 
-    def index(self, row, column, parentIndex=QModelIndex()):
+    def index(self, row, column, parentIndex=INVALID_QModelIndex):
+        """Create and return an index."""
         return self.createIndex()
 
-    def rowCount(self, parent=QModelIndex()):
+    def rowCount(self, parent=INVALID_QModelIndex):
+        """Return the number of rows."""
         return self.row_count
 
-    def columnCount(self, parent=QModelIndex()):
+    def columnCount(self, parent=INVALID_QModelIndex):
+        """Return the number of columns."""
         return self.column_count
 
     def headerData(self, section, orientation, role):
+        """Return data concerning the header."""
         if role == Qt.DisplayRole:
             if self.compound_names and orientation == Qt.Horizontal:
                 return self.compound_names[section]
@@ -742,24 +759,24 @@ class PlotModel(QAbstractItemModel):
         super().headerData(section, orientation, role)
 
     def data(self, index, role=Qt.DisplayRole):
-        """
+        """Return None.
+
         This function must be implemented when subclassing
         QAbstractItemModel. As the PlotView class does not need
         this function, an invalid QVariant is returned. The
         constructor QVariant() should not be used in the future
-        so None can be returned instead, as
-        recommended in the docs: https://doc.qt.io/qtforpython-6/considerations.html#qvariant.
+        so None can be returned instead, as recommended in the docs:
+        https://doc.qt.io/qtforpython-6/considerations.html#qvariant.
         """
-        if index.isValid():
-            if role in (Qt.DisplayRole, Qt.ToolTipRole):
-                return None
-
+        if index.isValid() and role in (Qt.DisplayRole, Qt.ToolTipRole):
+            return None
 
     def set_dims(self, dims):
-        """
-        This function is called if the dimensions in the
-        HDF5Widget.dims_view are edited. The dimensions of
-        the model are updated to match the input dimensions.
+        """Set the dimensions of the model.
+
+        Called if the dimensions in the HDF5Widget.dims_view
+        are edited. The dimensions of the model are updated to
+        match the input dimensions.
         """
         self.beginResetModel()
 
@@ -770,7 +787,7 @@ class PlotModel(QAbstractItemModel):
 
         self.dims = get_dims_from_str(dims)
 
-        if len(self.dims) >= 1 and not self.node.dtype == 'object':
+        if len(self.dims) >= 1 and self.node.dtype != "object":
             if not any(isinstance(i, slice) for i in self.dims):
                 self.row_count = 1
                 self.column_count = 1
@@ -819,6 +836,7 @@ class DimsTableModel(QAbstractTableModel):
     the indexing of the dataset and therefore view
     different slices.
     """
+
     def __init__(self, hdf):
         super().__init__()
 
@@ -830,9 +848,7 @@ class DimsTableModel(QAbstractTableModel):
         self.compound_names = None
 
     def update_node(self, path, now_on_PlotView=False):
-        """
-        Update the current node path
-        """
+        """Update the current node path."""
         self.compound_names = None
         self.column_count = 0
         self.shape = []
@@ -840,7 +856,7 @@ class DimsTableModel(QAbstractTableModel):
         self.beginResetModel()
         self.node = self.hdf[path]
 
-        if not isinstance(self.node, h5py.Dataset) or self.node.dtype == 'object':
+        if not isinstance(self.node, h5py.Dataset) or self.node.dtype == "object":
             self.endResetModel()
             return
 
@@ -848,48 +864,52 @@ class DimsTableModel(QAbstractTableModel):
 
         if self.node.ndim == 1:
             if self.compound_names:
-                self.shape = [':', ':']
+                self.shape = [":", ":"]
                 self.column_count = 2
                 if now_on_PlotView:
-                    self.shape[-1] = '0'
+                    self.shape[-1] = "0"
 
             else:
-                self.shape = [':']
+                self.shape = [":"]
                 self.column_count = 1
 
         elif self.node.ndim == 2:
-            self.shape = [':', ':']
+            self.shape = [":", ":"]
             self.column_count = 2
             if now_on_PlotView:
-                self.shape[-1] = '0'
+                self.shape[-1] = "0"
 
         elif self.node.ndim > 2:
             if self.node.shape[-1] in [3, 4]:
-                self.shape = (['0'] * (self.node.ndim - 3)) + [':', ':', ':']
+                self.shape = (["0"] * (self.node.ndim - 3)) + [":", ":", ":"]
                 self.column_count = len(self.shape)
                 if now_on_PlotView:
-                    self.shape[-2] = '0'
-                    self.shape[-1] = '0'
+                    self.shape[-2] = "0"
+                    self.shape[-1] = "0"
 
             else:
-                self.shape = (['0'] * (self.node.ndim - 2)) + [':', ':']
+                self.shape = (["0"] * (self.node.ndim - 2)) + [":", ":"]
                 self.column_count = len(self.shape)
                 if now_on_PlotView:
-                    self.shape[-1] = '0'
+                    self.shape[-1] = "0"
 
         self.endResetModel()
 
-    def rowCount(self, parent=QModelIndex()):
+    def rowCount(self, parent=INVALID_QModelIndex):
+        """Return the number of rows."""
         return self.row_count
 
-    def columnCount(self, parent=QModelIndex()):
+    def columnCount(self, parent=INVALID_QModelIndex):
+        """Return the number of columns."""
         return self.column_count
 
     def headerData(self, section, orientation, role):
+        """Return data concerning the header."""
         if role == Qt.DisplayRole:
             return str(section)
 
     def data(self, index, role=Qt.DisplayRole):
+        """Return dimensions properties for display."""
         if index.isValid():
             if role == Qt.DisplayRole:
                 return self.shape[index.column()]
@@ -901,19 +921,19 @@ class DimsTableModel(QAbstractTableModel):
                 else:
                     return Qt.AlignmentFlag.AlignVCenter + Qt.AlignmentFlag.AlignHCenter
 
-
     def flags(self, index):
+        """Return the flags for a particular index."""
         flags = super().flags(index)
         flags |= Qt.ItemIsEditable
         return flags
 
     def setData(self, index, value, role):
-
+        """Update the dimensions data."""
         if index.isValid() and role == Qt.EditRole:
             column = index.column()
             value = value.strip()
 
-            if ':' not in value:
+            if ":" not in value:
                 try:
                     num = int(value)
                     if self.compound_names and column == 1:
@@ -935,8 +955,8 @@ class DimsTableModel(QAbstractTableModel):
 
 def get_dims_from_str(dims_as_str):
     """
-    Takes a tuple of strings describing the desired dimensions
-    input by the user into the hdf5widget.dims_view and turns it
+    Take a tuple of strings describing the desired dimensions
+    input by the user into the hdf5widget.dims_view and turn it
     into a tuple of ints and/or slices, which can be used to
     index the dataset at the node.
 
@@ -947,26 +967,38 @@ def get_dims_from_str(dims_as_str):
     ----------
     dims_as_str : Tuple
         Tuple of strings describing the dimensions (dims)
-        e.g. ("0", "0", ":") or ("2:6:2", ":", "2", "3")
+        e.g. ("0", "0", ":") or ("2:6:2", ":", "2", "3").
 
     Returns
     -------
-    dims : Tuple
+    Tuple
        Tuple of ints and/or slices to be used as an indexing object
-       for array indexing, e.g. (0, 0, slice(None)) or
-       (slice(2, 6, 2), slice(none), 2, 3), corresponding to the two
-       examples given above for dims_as_str
+       for array indexing, e.g. (0, 0, slice(None, None, None)) or
+       (slice(2, 6, 2), slice(None, None, None), 2, 3), corresponding to the two
+       examples given above for dims_as_str.
 
+    Examples
+    --------
+    >>> from hdf5view.models import get_dims_from_str
+    >>> get_dims_from_str(("0", "0", ":"))
+    (0, 0, slice(None, None, None))
+    >>> get_dims_from_str(("2:6:2", ":", "2", "3"))
+    (slice(2, 6, 2), slice(None, None, None), 2, 3)
     """
     dims = []
-    for i, value in enumerate(dims_as_str):
+    for _i, value in enumerate(dims_as_str):
         try:
             v = int(value)
             dims.append(v)
         except (ValueError, TypeError):
-            if ':' in value:
+            if ":" in value:
                 value = value.strip()
-                s = slice(*map(lambda x: int(x.strip()) if x.strip() else None, value.split(':')))
+                s = slice(
+                    *map(
+                        lambda x: int(x.strip()) if x.strip() else None,
+                        value.split(":"),
+                    )
+                )
                 dims.append(s)
 
     dims = tuple(dims)
