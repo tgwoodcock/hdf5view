@@ -28,7 +28,7 @@ from qtpy.QtWidgets import (
 from . import __version__
 from .views import HDF5Widget
 
-WINDOW_TITLE = "HDF5View"
+WINDOW_TITLE = "hdf5view"
 MAX_RECENT_FILES = 10
 
 
