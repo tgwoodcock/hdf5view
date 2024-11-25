@@ -1,26 +1,26 @@
 [![PyPI Version](https://img.shields.io/pypi/v/hdf5view.svg)](https://pypi.python.org/pypi/hdf5view/)
 [![Supported Python Versions](https://img.shields.io/pypi/pyversions/hdf5view.svg)](https://pypi.python.org/pypi/hdf5view/)
 
-# **hdf5view** <img src="https://raw.githubusercontent.com/marts/hdf5view/main/src/hdf5view/resources/images/hdf5view.ico" width="28" />  
+# **hdf5view** <img src="https://raw.githubusercontent.com/tgwoodcock/hdf5view/main/src/hdf5view/resources/images/hdf5view.ico" width="28" />  
 
 **Simple Qt/Python based viewer for HDF5 files.**
 
 Features:
 - Image tab(s) showing rgb(a) or grayscale images of a selected node:
 
-![Image](https://raw.githubusercontent.com/marts/hdf5view/main/doc/screenshots/readme_imageview.png)
+![Image](https://raw.githubusercontent.com/tgwoodcock/hdf5view/main/docs/_static/readme/imageview.png)
 
 <br>
 
 - Plot tab(s) showing columns of data in a node:
 
-![Image](https://raw.githubusercontent.com/marts/hdf5view/main/doc/screenshots/readme_plotview.png)
+![Image](https://raw.githubusercontent.com/tgwoodcock/hdf5view/main/docs/_static/readme/plotview.png)
    
 <br>
 
 - Table tab giving a view of the data in the dataset selected:
 
-![Image](https://raw.githubusercontent.com/marts/hdf5view/main/doc/screenshots/readme_tableview.png)
+![Image](https://raw.githubusercontent.com/tgwoodcock/hdf5view/main/docs/_static/readme/tableview.png)
 
 <br>
 
@@ -271,12 +271,12 @@ Currently there are no unit tests for this package. The gui has been tested with
 
 ## **5. Issues**
 
-If there are any issues, please feel free to use the [issues mechanism on github](https://github.com/marts/hdf5view/issues) to get in touch.
+If there are any issues, please feel free to use the [issues mechanism on github](https://github.com/tgwoodcock/hdf5view/issues) to get in touch.
 
 <br>
 
 ## TODO:
 
 * Implement dynamic loading for files larger than the available memory
-* Add documentation
+* Add tests
 * Possibly add 3D rendering, likely based on pyqtgraph

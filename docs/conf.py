@@ -12,6 +12,7 @@ project = "hdf5view"
 author = "hdf5view developers"
 copyright = f"2019-%Y, {author}"
 release = hdf5view.__version__
+version = hdf5view.__version__
 
 
 # -- General configuration ---------------------------------------------------
