@@ -30,7 +30,6 @@ jobs:
       - name: Build HTML
         uses: ammaraskar/sphinx-action@8.1.3
         with:
-          python-version: '3.12'
           pre-build-command: "pip install -e ."
           docs-folder: "docs/"
       - name: Upload artifacts
