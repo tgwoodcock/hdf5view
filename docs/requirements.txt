@@ -5,4 +5,3 @@ numpydoc
 sphinx-codeautolink[ipython]<0.14
 sphinx-copybutton>=0.2.5
 sphinx-design
-PyQt5
