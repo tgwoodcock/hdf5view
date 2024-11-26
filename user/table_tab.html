@@ -1,0 +1,774 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Table Tab Tutorial &#8212; hdf5view 0.2.dev0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-codeautolink.css?v=125d5c1c" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../_static/documentation_options.js?v=3b1a31c5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user/table_tab';</script>
+    <link rel="icon" href="../_static/hdf5view_favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Image Tab Tutorial" href="image_tab.html" />
+    <link rel="prev" title="Making the demo HDF5 file" href="make_demo_data.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2.dev0" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/hdf5view_logo.png" class="logo__image only-light" alt="hdf5view"/>
+    <img src="../_static/hdf5view_logo_dark.png" class="logo__image only-dark pst-js-only" alt="hdf5view"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../dev/index.html">
+    Contributing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../reference/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../changelog.html">
+    Changelog
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/tgwoodcock/hdf5view" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../dev/index.html">
+    Contributing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../reference/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../changelog.html">
+    Changelog
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/tgwoodcock/hdf5view" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="make_demo_data.html">Making the demo HDF5 file</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Table Tab Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="image_tab.html">Image Tab Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plot_tab.html">Plot Tab Tutorial</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="related_projects.html">Related Projects</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/tgwoodcock/hdf5view/blob/main/LICENSE">License</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">User guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Table Tab Tutorial</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="table-tab-tutorial">
+<span id="id1"></span><h1>Table Tab Tutorial<a class="headerlink" href="#table-tab-tutorial" title="Link to this heading">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>This tutorial uses data in the file <code class="docutils literal notranslate"><span class="pre">demo.hdf5</span></code>. You can generate this file by following the instructions on <a class="reference internal" href="make_demo_data.html#make-demo-data"><span class="std std-ref">Making the demo HDF5 file</span></a>.</p>
+<p>The first step is to open <code class="docutils literal notranslate"><span class="pre">demo.hdf5</span></code> in hdf5view using one of the methods described in <a class="reference internal" href="basic_usage.html#basic-usage"><span class="std std-ref">Basic Usage</span></a>. When you have opened the file, the hdf5view application window should look like this:</p>
+<figure class="align-default" id="id2">
+<img alt="../_images/app_init_file.png" src="../_images/app_init_file.png" />
+<figcaption>
+<p><span class="caption-text">The initial state of the hdf5view application after opening the file “demo.hdf5”. For a description see <a class="reference internal" href="basic_usage.html#initial-app-state-file"><span class="std std-ref">Initial State of the Application</span></a>.</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Now click the arrow (or double-click the folder) in the <code class="docutils literal notranslate"><span class="pre">File</span> <span class="pre">Structure</span></code> table to expand the tree view, and left-click on the dataset <code class="docutils literal notranslate"><span class="pre">3columns</span></code> to select it. The application window should now look like this:</p>
+<figure class="align-default" id="id3">
+<img alt="../_images/table_3cols_default.png" src="../_images/table_3cols_default.png" />
+<figcaption>
+<p><span class="caption-text">The state of the hdf5view application after selecting the dataset <code class="docutils literal notranslate"><span class="pre">3columns</span></code> in the <code class="docutils literal notranslate"><span class="pre">File</span> <span class="pre">Structure</span></code> of <code class="docutils literal notranslate"><span class="pre">demo.hdf5</span></code>.</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>We can see from the <code class="docutils literal notranslate"><span class="pre">File</span> <span class="pre">Structure</span></code> table that the shape of the dataset <code class="docutils literal notranslate"><span class="pre">3columns</span></code> is (91, 3) <em>i.e.</em> it is a 2D dataset with 91 rows and 3 columns:</p>
+<img alt="../_images/tt4.png" src="../_images/tt4.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>The shape, number of dimensions (ndim) and data type (dtype) of the dataset are visible from the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> table:</p>
+<img alt="../_images/tt6.png" src="../_images/tt6.png" />
+</section>
+<section id="changing-the-slice">
+<h2>Changing the Slice<a class="headerlink" href="#changing-the-slice" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">Slice</span></code> table has a default value for each tab type (<code class="docutils literal notranslate"><span class="pre">Table</span></code>, <code class="docutils literal notranslate"><span class="pre">Plot</span></code> or <code class="docutils literal notranslate"><span class="pre">Image</span></code>) and dataset shape. The default slice for the <code class="docutils literal notranslate"><span class="pre">Table</span></code> tab of a 2D dataset like <code class="docutils literal notranslate"><span class="pre">3columns</span></code> is <code class="docutils literal notranslate"><span class="pre">(:,</span> <span class="pre">:)</span></code>, meaning that all data are displayed in the <code class="docutils literal notranslate"><span class="pre">Table</span></code> (in the image below only rows up to index 22 are shown).</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Slice</p></th>
+<th class="head"><p>Table tab</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><img alt="../_images/tt8.png" src="../_images/tt8.png" />
+</td>
+<td><img alt="../_images/tt7.png" src="../_images/tt7.png" />
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The <a class="reference internal" href="#default-slices-table"><span class="std std-ref">Default Slices on the Table Tab</span></a> are intended as a sensible starting point but we can also change the slice to view the data in different ways.</p>
+<section id="adding-a-start-value">
+<h3>Adding a Start value<a class="headerlink" href="#adding-a-start-value" title="Link to this heading">#</a></h3>
+<p>If we want to display data from the 11th row (index = 10) onwards for all columns, we can set the slice like this <code class="docutils literal notranslate"><span class="pre">(10:,</span> <span class="pre">:)</span></code>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Slice</p></th>
+<th class="head"><p>Table tab</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><img alt="../_images/tt10.png" src="../_images/tt10.png" />
+</td>
+<td><img alt="../_images/tt11.png" src="../_images/tt11.png" />
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="start-and-stop-values">
+<h3>Start and Stop values<a class="headerlink" href="#start-and-stop-values" title="Link to this heading">#</a></h3>
+<p>If we want to display data from the 11th row (index = 10) up to and including the 31st row (index = 30) for all columns, we can set the slice like this <code class="docutils literal notranslate"><span class="pre">(10:31,</span> <span class="pre">:)</span></code>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Slice</p></th>
+<th class="head"><p>Table tab</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><img alt="../_images/tt12.png" src="../_images/tt12.png" />
+</td>
+<td><img alt="../_images/tt13.png" src="../_images/tt13.png" />
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="start-stop-and-step-values">
+<h3>Start, Stop and Step values<a class="headerlink" href="#start-stop-and-step-values" title="Link to this heading">#</a></h3>
+<p>If we want to display data from the 11th row (index = 10) up to and including the 31st row (index = 30) in steps of 2 (<em>i.e.</em> every other row) for all columns, we can set the slice like this <code class="docutils literal notranslate"><span class="pre">(10:31:2,</span> <span class="pre">:)</span></code>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Slice</p></th>
+<th class="head"><p>Table tab</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><img alt="../_images/tt14.png" src="../_images/tt14.png" />
+</td>
+<td><img alt="../_images/tt15.png" src="../_images/tt15.png" />
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="selecting-several-columns">
+<h3>Selecting Several Columns<a class="headerlink" href="#selecting-several-columns" title="Link to this heading">#</a></h3>
+<p>The slicing rules for rows are also valid for columns (or any other dimension of the dataset). If we want to display data from the 11th row (index = 10) up to and including the 31st row (index = 30) in steps of 2 (<em>i.e.</em> every other row) but only for the 2nd and 3rd columns (indices 1 and 2), we can set the slice like this <code class="docutils literal notranslate"><span class="pre">(10:31:2,</span> <span class="pre">1:)</span></code>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Slice</p></th>
+<th class="head"><p>Table tab</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><img alt="../_images/tt16.png" src="../_images/tt16.png" />
+</td>
+<td><img alt="../_images/tt17.png" src="../_images/tt17.png" />
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="selecting-a-single-value">
+<h3>Selecting a Single Value<a class="headerlink" href="#selecting-a-single-value" title="Link to this heading">#</a></h3>
+<p>If we want to display the value in the 17th row (index = 16) in the 2nd column (index 1), we can set the slice like this <code class="docutils literal notranslate"><span class="pre">(16,</span> <span class="pre">1)</span></code>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Slice</p></th>
+<th class="head"><p>Table tab</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><img alt="../_images/tt18.png" src="../_images/tt18.png" />
+</td>
+<td><img alt="../_images/tt19.png" src="../_images/tt19.png" />
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="datasets-with-compound-names">
+<h2>Datasets with Compound Names<a class="headerlink" href="#datasets-with-compound-names" title="Link to this heading">#</a></h2>
+<p>Some datasets have compound names. This means that every item consists of a set of data. Each element in the set may have a different data type and is described by a compound name.</p>
+<p>In hdf5view, navigate to and select the dataset <code class="docutils literal notranslate"><span class="pre">compound_names</span></code> in the file <code class="docutils literal notranslate"><span class="pre">demo.hdf5</span></code>. In the <code class="docutils literal notranslate"><span class="pre">File</span> <span class="pre">Structure</span></code> table, the shape of the dataset appears as (91,). If we look at the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> table, we can see that the entry for <code class="docutils literal notranslate"><span class="pre">shape</span></code> is coloured red. This indicates that a dataset with compound names is active. The effective number of columns, <em>i.e.</em> the number of compound names for each item, is shown as <code class="docutils literal notranslate"><span class="pre">ncols=3</span></code>, in this case. The compound names (“x”, “sin x” and “cos x”) and associated data types (“&lt;u2”, “&lt;f4” and “&lt;f4”) can be seen as tuples in the <code class="docutils literal notranslate"><span class="pre">dtype</span></code> row of the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> table.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>File Structure</p></th>
+<th class="head"><p>Dataset</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><img alt="../_images/cmpnd_names1.png" src="../_images/cmpnd_names1.png" />
+</td>
+<td><img alt="../_images/cmpnd_names4.png" src="../_images/cmpnd_names4.png" />
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>In the main tabbed area, the default <code class="docutils literal notranslate"><span class="pre">Table</span></code> tab shows the compound names as column names.</p>
+<img alt="../_images/cmpnd_names2.png" src="../_images/cmpnd_names2.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<section id="slicing-datasets-with-compound-names">
+<h3>Slicing Datasets with Compound Names<a class="headerlink" href="#slicing-datasets-with-compound-names" title="Link to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">Slice</span></code> table shows an axis for each shape axis of the dataset and an extra axis corresponding to the compound names. For the node <code class="docutils literal notranslate"><span class="pre">compound_names</span></code> the dataset is 1D, so the <code class="docutils literal notranslate"><span class="pre">Slice</span></code> table is therefore 2D. We select rows in the dataset using the first axis and column indices corresponding to the compound names in the last axis.</p>
+<p>The slicing behaviour is similar to that for any other dataset. For example, if we want to show rows with indices 15 up to and including 25 for the columns corresponding to the compound names <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">cos</span> <span class="pre">x</span></code> (indices 0 and 2), we set the <code class="docutils literal notranslate"><span class="pre">Slice</span></code> table to be <code class="docutils literal notranslate"><span class="pre">(15:26,</span> <span class="pre">::2)</span></code>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Slice</p></th>
+<th class="head"><p>Table tab</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><img alt="../_images/cmpnd_names_a5.png" src="../_images/cmpnd_names_a5.png" />
+</td>
+<td><img alt="../_images/cmpnd_names_a2.png" src="../_images/cmpnd_names_a2.png" />
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="default-slices-on-the-table-tab">
+<span id="default-slices-table"></span><h2>Default Slices on the Table Tab<a class="headerlink" href="#default-slices-on-the-table-tab" title="Link to this heading">#</a></h2>
+<p>On selecting a dataset in the <code class="docutils literal notranslate"><span class="pre">File</span> <span class="pre">Structure</span></code> table, the <code class="docutils literal notranslate"><span class="pre">Slice</span></code> table adopts certain default values depending on the shape of the dataset. These default values are intended to act as a sensible starting point for displaying data in the <code class="docutils literal notranslate"><span class="pre">Table</span></code> tab. You can then change the <code class="docutils literal notranslate"><span class="pre">Slice</span></code> as needed.</p>
+<p>In general, the <code class="docutils literal notranslate"><span class="pre">Table</span></code> tab shows a 2D slice of the data corresponding to the last two axes of the dataset. Thus for a dataset with ndim = 2, the slice shown is (:, :) and for a dataset with ndim = 6, the slice shown is (0, 0, 0, 0, :, :).</p>
+<p>The exceptions to this are as follows:</p>
+<ul class="simple">
+<li><p>ndim = 0, <em>e.g.</em> an “object” type dataset comprising a string. A single cell containing the string (or other data) is displayed in the <code class="docutils literal notranslate"><span class="pre">Table</span></code> tab.</p></li>
+<li><p>ndim = 1. All the data are displayed in the <code class="docutils literal notranslate"><span class="pre">Table</span></code> tab.</p></li>
+<li><p>ndim = 1 with compound names. This is treated as a 2D dataset where the columns correspond to the compound names. All data are shown.</p></li>
+<li><p>ndim &gt; 2 and shape[-1] in [3, 4]. These are treated as arrays of rgb or rgba image(s) and the last <em>three</em> axes are chosen for display in the <code class="docutils literal notranslate"><span class="pre">Table</span></code> tab. For example, a dataset with ndim = 6 and shape[-1] in [3, 4], the slice shown is (0, 0, 0, :, :, :). In this way, the rgb(a) values for each pixel can be easily inspected.</p></li>
+</ul>
+<p>The default slices on the <code class="docutils literal notranslate"><span class="pre">Table</span></code> tab can be summarised as follows:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>ndim</p></th>
+<th class="head"><p>condition</p></th>
+<th class="head"><p>interpretation</p></th>
+<th class="head"><p>default slice</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td></td>
+<td></td>
+<td><p>N.A., all data shown</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><p>1</p></td>
+<td></td>
+<td></td>
+<td><p>(:,)</p></td>
+</tr>
+<tr class="row-even"><td><p>compound names</p></td>
+<td><p>2D array</p></td>
+<td><p>(:, :)</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td></td>
+<td></td>
+<td><p>(:, :)</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><p>&gt; 2</p></td>
+<td><p>shape[-1] in [3, 4]</p></td>
+<td><p>rgb or rgba image(s)</p></td>
+<td><p>([0] * (ndim - 3) + [:, :, :])</p></td>
+</tr>
+<tr class="row-odd"><td><p>shape[-1] Not in [3, 4]</p></td>
+<td></td>
+<td><p>([0] * (ndim - 2) + [:, :])</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>You can test these default values by selecting different datasets in the file <code class="docutils literal notranslate"><span class="pre">demo.hdf</span></code>.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="make_demo_data.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Making the demo HDF5 file</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="image_tab.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Image Tab Tutorial</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#changing-the-slice">Changing the Slice</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-a-start-value">Adding a Start value</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#start-and-stop-values">Start and Stop values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#start-stop-and-step-values">Start, Stop and Step values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#selecting-several-columns">Selecting Several Columns</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#selecting-a-single-value">Selecting a Single Value</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datasets-with-compound-names">Datasets with Compound Names</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#slicing-datasets-with-compound-names">Slicing Datasets with Compound Names</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#default-slices-on-the-table-tab">Default Slices on the Table Tab</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/user/table_tab.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2019-2024, hdf5view developers.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

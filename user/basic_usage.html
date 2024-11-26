@@ -1,0 +1,660 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Basic Usage &#8212; hdf5view 0.2.dev0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-codeautolink.css?v=125d5c1c" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../_static/documentation_options.js?v=3b1a31c5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user/basic_usage';</script>
+    <link rel="icon" href="../_static/hdf5view_favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Making the demo HDF5 file" href="make_demo_data.html" />
+    <link rel="prev" title="Installation" href="installation.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2.dev0" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/hdf5view_logo.png" class="logo__image only-light" alt="hdf5view"/>
+    <img src="../_static/hdf5view_logo_dark.png" class="logo__image only-dark pst-js-only" alt="hdf5view"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../dev/index.html">
+    Contributing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../reference/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../changelog.html">
+    Changelog
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/tgwoodcock/hdf5view" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../dev/index.html">
+    Contributing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../reference/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../changelog.html">
+    Changelog
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/tgwoodcock/hdf5view" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="make_demo_data.html">Making the demo HDF5 file</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="table_tab.html">Table Tab Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="image_tab.html">Image Tab Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plot_tab.html">Plot Tab Tutorial</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="related_projects.html">Related Projects</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/tgwoodcock/hdf5view/blob/main/LICENSE">License</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">User guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Basic Usage</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="basic-usage">
+<span id="id1"></span><h1>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading">#</a></h1>
+<section id="opening-an-hdf5-file">
+<h2>Opening an HDF5 File<a class="headerlink" href="#opening-an-hdf5-file" title="Link to this heading">#</a></h2>
+<p>With hdf5view you can either:</p>
+<ol class="arabic simple">
+<li><p>Open any HDF5 file with two clicks using the context menu. To enable this, please follow the guide to <a class="reference internal" href="#context-menu-setup"><span class="std std-ref">Setting up the context menu</span></a>.</p></li>
+</ol>
+<p><strong>or</strong></p>
+<ol class="arabic" start="2">
+<li><p>Open the hdf5view application and use the <code class="docutils literal notranslate"><span class="pre">File</span> <span class="pre">&gt;</span> <span class="pre">Open</span></code> menu to open a file or drag and drop a file onto the application window. To start the hdf5view application, double click <code class="docutils literal notranslate"><span class="pre">hdf5view.exe</span></code> in the <code class="docutils literal notranslate"><span class="pre">Scripts</span></code> folder of your Python distribution.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can create a desktop link to <code class="docutils literal notranslate"><span class="pre">hdf5view.exe</span></code> in the <code class="docutils literal notranslate"><span class="pre">Scripts</span></code> folder of your Python distribution for convenience. A Windows icon file hdf5view.ico is provided in the folder hdf5view/resources/images.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you prefer working at the terminal, you can start the hdf5view application using</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>hdf5view
+</pre></div>
+</div>
+<p>or you can open a file directly using</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>hdf5view<span class="w"> </span>-f<span class="w"> </span>&lt;path/to/my/hdf5file&gt;
+</pre></div>
+</div>
+</div>
+</li>
+</ol>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</section>
+<section id="initial-state-of-the-application">
+<span id="initial-app-state-file"></span><h2>Initial State of the Application<a class="headerlink" href="#initial-state-of-the-application" title="Link to this heading">#</a></h2>
+<p>Once you have opened an HDF5 file with hdf5view, the application window will look like this:</p>
+<img alt="../_images/app_init_file.png" src="../_images/app_init_file.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>The application window contains five separate widgets:</p>
+<section id="file-structure-table">
+<h3>File Structure Table<a class="headerlink" href="#file-structure-table" title="Link to this heading">#</a></h3>
+<p>The File Structure table (left hand side of the application), shows the structure of the open HDF5 file as a directory tree. By default it is initally at the root group and you can double-click on the folder or click the arrow to expand the tree and navigate to other groups or datasets.</p>
+<figure class="align-default" id="id2">
+<img alt="../_images/tt4.png" src="../_images/tt4.png" />
+<figcaption>
+<p><span class="caption-text">The File Structure table with expanded directory structure and the dataset “3columns” selected.</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="central-tabbed-area">
+<h3>Central Tabbed Area<a class="headerlink" href="#central-tabbed-area" title="Link to this heading">#</a></h3>
+<p>The central tabbed area shows the data in a particular dataset. By default a <code class="docutils literal notranslate"><span class="pre">Table</span></code> tab is visible. You can add <code class="docutils literal notranslate"><span class="pre">Image</span></code> and <code class="docutils literal notranslate"><span class="pre">Plot</span></code> tabs here later.</p>
+<figure class="align-default" id="id3">
+<img alt="../_images/tt7.png" src="../_images/tt7.png" />
+<figcaption>
+<p><span class="caption-text">Part of the central tabbed area showing the default <code class="docutils literal notranslate"><span class="pre">Table</span></code> tab. The filename is shown at the top of the tab.</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="attributes-table">
+<h3>Attributes Table<a class="headerlink" href="#attributes-table" title="Link to this heading">#</a></h3>
+<p>The Attributes table (right hand side, top), shows details of any attributes of the selected dataset.</p>
+<figure class="align-default" id="id4">
+<img alt="../_images/tt5.png" src="../_images/tt5.png" />
+<figcaption>
+<p><span class="caption-text">The Attributes table.</span><a class="headerlink" href="#id4" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="dataset-table">
+<h3>Dataset Table<a class="headerlink" href="#dataset-table" title="Link to this heading">#</a></h3>
+<p>The Dataset table (right hand side, middle), shows details of the type and shape of the data at the selected dataset.</p>
+<figure class="align-default" id="id5">
+<img alt="../_images/tt6.png" src="../_images/tt6.png" />
+<figcaption>
+<p><span class="caption-text">The Dataset table.</span><a class="headerlink" href="#id5" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="slice-table">
+<h3>Slice Table<a class="headerlink" href="#slice-table" title="Link to this heading">#</a></h3>
+<p>The Slice table (right hand side, bottom), shows which slice of the data is currently displayed. There are default slice values for particular dataset types and shapes in hdf5view, which are intended as a sensible starting point. You can change the slice to get a different view of the data.</p>
+<figure class="align-default" id="id6">
+<img alt="../_images/tt8.png" src="../_images/tt8.png" />
+<figcaption>
+<p><span class="caption-text">The Slice table, showing the default slice for the <code class="docutils literal notranslate"><span class="pre">Table</span></code> tab at a 2D dataset (all rows and columns are shown in the <code class="docutils literal notranslate"><span class="pre">Table</span></code>).</span><a class="headerlink" href="#id6" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Detailed guides to using tabs in hdf5view are available in the <a class="reference internal" href="table_tab.html#table-tab-tutorial"><span class="std std-ref">Table Tab Tutorial</span></a>, <a class="reference internal" href="plot_tab.html#plot-tab-tutorial"><span class="std std-ref">Plot Tab Tutorial</span></a> and <a class="reference internal" href="image_tab.html#image-tab-tutorial"><span class="std std-ref">Image Tab Tutorial</span></a>.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</section>
+</section>
+<section id="setting-up-the-context-menu">
+<span id="context-menu-setup"></span><h2>Setting up the context menu<a class="headerlink" href="#setting-up-the-context-menu" title="Link to this heading">#</a></h2>
+<p>A particularly useful way to use hdf5view is to add an entry to the context menu. That way, you can right-click on any HDF5 file and left-click “Open with hdf5view” from the menu that appears.</p>
+<p>On Windows, to get “Open with hdf5view” on the right click context menu, we need to modify the registry. To do this, please follow these 7 steps:</p>
+<ol class="arabic">
+<li><p>Run the registry editor (regedit) as an administrator</p></li>
+<li><p>Navigate to <code class="docutils literal notranslate"><span class="pre">Computer\HKEY_CLASSES_ROOT\*\shell</span></code></p></li>
+<li><p>Right-click on <code class="docutils literal notranslate"><span class="pre">shell</span></code> and select <code class="docutils literal notranslate"><span class="pre">New</span> <span class="pre">&gt;</span> <span class="pre">Key</span></code></p></li>
+<li><p>Name the new key <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">with</span> <span class="pre">hdf5view</span></code></p></li>
+<li><p>Right-click on <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">with</span> <span class="pre">hdf5view</span></code> and select <code class="docutils literal notranslate"><span class="pre">New</span> <span class="pre">&gt;</span> <span class="pre">Key</span></code></p></li>
+<li><p>Name the new key <code class="docutils literal notranslate"><span class="pre">command</span></code></p>
+<p>The directory structure should now look like this:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-- Computer
+    |-- HKEY_CLASSES_ROOT
+      |-- *
+         |-- shell
+            |-- Open with hdf5view
+               |-- command
+</pre></div>
+</div>
+</li>
+<li><p>Click on <code class="docutils literal notranslate"><span class="pre">command</span></code> to select it. In the right-hand window, you should see a table with 3 columns (Name, Type and Data). Right-click on the first entry under the <code class="docutils literal notranslate"><span class="pre">Name</span></code> column and select <code class="docutils literal notranslate"><span class="pre">Modify</span></code>. Now find the box <code class="docutils literal notranslate"><span class="pre">value</span> <span class="pre">data:</span></code> and enter the path to <code class="docutils literal notranslate"><span class="pre">hdf5view.exe</span></code> in the Scripts folder of your Python distribution followed by <code class="docutils literal notranslate"><span class="pre">-f</span> <span class="pre">&quot;%1&quot;</span></code>. This should look something like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">Program</span> <span class="n">Files</span>\<span class="n">PythonXXX</span>\<span class="n">Scripts</span>\<span class="n">hdf5view</span><span class="o">.</span><span class="n">exe</span> <span class="o">-</span><span class="n">f</span> <span class="s2">&quot;%1&quot;</span>
+</pre></div>
+</div>
+<p>(replace XXX with the number of your Python version <em>e.g.</em> 312 for Python312). Finally select <cite>OK</cite>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Enclosing %1 in quotes (as above) <code class="docutils literal notranslate"><span class="pre">&quot;%1&quot;</span></code> ensures that filenames including spaces are passed correctly to hdf5view.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If you want to add the icon to the context menu as well, right click on the key <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">with</span> <span class="pre">hdf5view</span></code> and select <code class="docutils literal notranslate"><span class="pre">New</span> <span class="pre">&gt;</span> <span class="pre">String</span> <span class="pre">Value</span></code>. In the right-hand window, right-click on the entry in the <code class="docutils literal notranslate"><span class="pre">Name</span></code> column and select <code class="docutils literal notranslate"><span class="pre">Modify</span></code>. Set the <code class="docutils literal notranslate"><span class="pre">value</span> <span class="pre">name:</span></code> to <code class="docutils literal notranslate"><span class="pre">Icon</span></code>. Finally set the <code class="docutils literal notranslate"><span class="pre">value</span> <span class="pre">data:</span></code> to the path to the hdf5view icon as a string, <em>e.g.</em>:</p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;C:\Program</span> <span class="pre">Files\PythonXXX\Lib\site-packages\hdf5view\resources\images\hdf5view.ico&quot;</span></code></p>
+</div>
+</li>
+</ol>
+<p>Now you can right-click on any HDF5 file and open it with hdf5view.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="installation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Installation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="make_demo_data.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Making the demo HDF5 file</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#opening-an-hdf5-file">Opening an HDF5 File</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initial-state-of-the-application">Initial State of the Application</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#file-structure-table">File Structure Table</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#central-tabbed-area">Central Tabbed Area</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attributes-table">Attributes Table</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-table">Dataset Table</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#slice-table">Slice Table</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-the-context-menu">Setting up the context menu</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/user/basic_usage.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2019-2024, hdf5view developers.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
