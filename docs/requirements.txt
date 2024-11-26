@@ -1,0 +1,9 @@
+pydata-sphinx-theme
+matplotlib
+nbsphinx>=0.7
+numpydoc
+sphinx-codeautolink[ipython]<0.14
+sphinx-copybutton>=0.2.5
+sphinx-design
+setuptools
+PyQt5
