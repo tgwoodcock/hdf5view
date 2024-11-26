@@ -1,0 +1,20 @@
+exclude: 'docs/conf.py'
+
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v5.0.0
+  hooks:
+  - id: check-merge-conflict  # checks for files that contain merge conflict strings
+  - id: check-toml  # checks toml files for parseable syntax
+  - id: debug-statements  # checks for debugger imports and py37+ `breakpoint()` calls in python source
+
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.7.4
+  hooks:
+    # Run the linter.
+    - id: ruff
+      types_or: [python, pyi, jupyter]
+      args: [--fix, --exit-non-zero-on-fix]
+    # Run the formatter.
+    - id: ruff-format
+      types_or: [python, pyi, jupyter]
