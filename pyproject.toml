@@ -41,8 +41,10 @@ dynamic = ["version"]
 'content-type' = "text/markdown"
 
 [project.urls]
+'Documentation' = 'https://tgwoodcock.github.io/hdf5view'
 'Source' = 'https://github.com/tgwoodcock/hdf5view/'
 'Bug Tracker' = 'https://github.com/tgwoodcock/hdf5view/issues'
+'Changelog' = 'https://github.com/tgwoodcock/hdf5view/blob/main/CHANGELOG.rst'
 
 [project.optional-dependencies]
 doc = [
