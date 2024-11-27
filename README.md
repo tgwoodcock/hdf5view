@@ -36,230 +36,38 @@ Features:
 
 **Why use hdf5view?**
 
-hdf5view is a simple Qt/Python based tool which aims to be easy to use and to allow you to get a view of your data with just a few clicks. If you need to check the structure of an HDF5 file, quickly see what data it contains or choose a dataset for futher analysis in another program, hdf5view may be for you. We don't aim to be able to create or edit HDF5 files and have only minimal possibilties for data analysis other than just viewing it. Other viewers for HDF5 files are available, including that from the [HDF5 Group](https://www.hdfgroup.org/), which also has capabilities for creating and editing HDF5 files. 
+hdf5view is a simple Qt/Python based tool which aims to be easy to use and to allow you to get a view of your data with just a few clicks. If you need to check the structure of an HDF5 file, quickly see what data it contains or choose a dataset for futher analysis in another program, hdf5view may be for you. We don't aim to be able to create or edit HDF5 files and have only minimal possibilties for data analysis other than just viewing it. Other viewers for HDF5 files are available, which may be more suited to your needs, see [related projects](https://tgwoodcock.github.io/hdf5view/user/related_projects.html).
+
+<br>
+
+## Documentation
+
+The documentation for hdf5view is here: [https://tgwoodcock.github.io/hdf5view](https://tgwoodcock.github.io/hdf5view)
 
 <br>
 
 ## **1. Installing**
 
-hdf5view is designed to be platform independent.
-
-#### **Qt API Bindings**
-
-One of [pyqt5](https://www.riverbankcomputing.com/software/pyqt/), [pyside2](https://pyside.org), [pyqt6](https://www.riverbankcomputing.com/software/pyqt/) or [pyside6](https://pyside.org) is required in order to be able to run hdf5view. Please install any one of these, e.g. with pip:
-
-```
-pip install pyqt5
-```
-
-or on linux (Ubuntu/Debian), you can install a system package:
-
-```
-sudo apt install python3-pyqt5
-```
-
-[qtpy](https://github.com/spyder-ide/qtpy) is used as an abstraction layer for pyqt5/pyside2/pyqt6/pyside6. If you have any of these Qt API bindings installed, qtpy will take the first available one in the order shown in the previous sentence. hdf5view works with all of the bindings. If you have more than one of the bindings installed and want to specify which one should be used for hdf5view, you can do this by setting the `QT_API` environment variable before running hdf5view.
-
-For example: if you have pyqt5 and pyside2 installed and you want hdf5view to use PySide2, on Windows PowerShell:
-
-```
-$env:QT_API = 'pyside2'
-```
-
-or on linux (Ubuntu/Debian)
-
-```
-export QT_API=pyside2
-```
-
-before running HDF5View
-
-<br>
-
-#### **Other Dependencies**
-
-The other dependencies are [qtpy](https://github.com/spyder-ide/qtpy), [h5py](https://www.h5py.org/), [psutil](https://github.com/giampaolo/psutil) and [pyqtgraph](https://www.pyqtgraph.org/). Currently installed versions of these dependencies will not be overwritten by installing hdf5view. If these are not already present on your system, they will be installed during the installation of hdf5view. 
-
-If you prefer to install them in advance, you can use pip:
-
-```
-pip install h5py, qtpy, psutil, pyqtgraph
-```
-
-or on linux to install system packages:
-
-```
-sudo apt install python3-h5py python3-pyqtgraph python3-psutil python3-qtpy
-```
-
-Note: [pyqtgraph](https://www.pyqtgraph.org/) 0.12 supports all of pyqt5, pyside2, pyqt6 or pyside6. Older versions of pyqtgraph may not support all of them.
-
-<br>
-
-#### **hdf5view**
-
-To install the current release from PyPI system-wide on Windows:
-
-```
-pip install hdf5view
-```
-
-or on linux:
-
-```
-sudo pip3 install hdf5view
-```
-
-To install the current development version, download or clone the repo and install either system-wide on Windows:
-
-```
-cd hdf5view
-pip install .
-```
-
-or on linux:
-
-```
-cd hdf5view
-sudo pip3 install .
-```
-
-You could also use the flag -e with the pip command to install in editable mode, then you can pull changes from the repo and they are automatically available on your system.
-
-To setup an isolated development environment using virtualenv:
-
-```
-python3 -m virtualenv -p python3 .
-source bin/activate
-pip install -e .
-```
-
-To uninstall hdf5view:
-
-```
-pip uninstall hdf5view
-```
-
-or:
-
-```
-sudo pip3 uninstall hdf5view
-```
+hdf5view is designed to be platform independent and can be installed with `pip`. Please see the [installation guide](https://tgwoodcock.github.io/hdf5view/user/installation.html) for details.
 
 <br>
 
 ## **2. Running**
 
+The [usage guide](https://tgwoodcock.github.io/hdf5view/user/basic_usage.html) shows various ways to start hdf5view and open HDF5 files in the application.
+
 #### **Context menu**
 
-A particularly useful way to use hdf5view is to add an entry to the context menu. This way, you can right-click on an HDF5 file and select "Open with hdf5view" from the menu.
+A particularly useful way to use hdf5view is to add an entry to the context menu. This way, you can open any HDF5 file with two clicks. Please see the [context menu guide](https://tgwoodcock.github.io/hdf5view/user/basic_usage.html#setting-up-the-context-menu) for instructions on how to set this up.
 
-On Windows, to get "Open with hdf5view" on the right click context menu, we need to modify the registy. To do this, please follow these 8 steps:
-
-1. Run the registry editor (regedit) as an administrator
-2. Navigate to `Computer\HKEY_CLASSES_ROOT\*\shell`
-3. Right-click on `shell` and select `New > Key`
-4. Name the new key `Open with hdf5view`
-5. Right-click on `Open with hdf5view` and select `New > Key`
-6. Name the new key `command`
-
-The directory structure should now look like this:
-
-```
--- Computer
-    |-- HKEY_CLASSES_ROOT
-      |-- *
-         |-- shell
-            |-- Open with hdf5view
-               |-- command
-```
-
-7. Click on `command` to select it. In the right-hand window, you should see a table with 3 columns (Name, Type and Data). Right-click on the first entry under the `Name` column and select `Modify`. Now
-find the box `value data:` and enter the path to `hdf5view.exe` in the Scripts folder of your Python distribution followed by `-f "%1"`. This should look something like this:
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `C:\Program Files\PythonXXX\Scripts\hdf5view.exe -f "%1"` 
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (replace XXX with the number of your Python version *e.g.* 312 for Python312). Finally select `OK`.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Note:** enclosing %1 in quotes (as above) `"%1"` ensures that filenames including spaces are passed correctly to hdf5view.
-
-8. If you want to add the icon to the context menu as well, right click on the key `Open with hdf5view` key and select `New > String Value`. In the right-hand window, right-click on the entry in the `Name` column and and select `Modify`. Set the `value name:` to `Icon`. Finally set the `value data:` to the path to the hdf5view icon as a string, e.g.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `"C:\Program Files\PythonXXX\Lib\site-packages\hdf5view\resources\images\hdf5view.ico"`
-
-Now you can right-click on any HDF5 file and open it with hdf5view.
-
-<br>
-
-#### **Command line**
-
-In the terminal call:
-
-```
-hdf5view
-```
-
-to start the program, or
-
-```
-hdf5view -f <hdf5file>
-```
-
-to start the program and open the HDF5 file specified. HDF5 files can also be dropped onto the application window once opened.
-
-<br>
-
-#### **Desktop icon**
-
-You can also create a desktop link to start the program for convenience. A Windows icon file hdf5view.ico is provided in the folder hdf5view/resources/images.
-
-<br>
 
 ## **3. Usage**
 
-#### **Basic**
+In the [documentation](https://tgwoodcock.github.io/hdf5view), there are tutorials on how to use
 
-The structure of the HDF5 file can be navigated using the tree view on the left hand side. The central panel displays a table of the data at the node selected. If the node has more than two dimensions, a 2D slice of the data is displayed in the table (a 3D slice is shown if the shape of the last dimension is 3 or 4: in this case we assume the data are rgb(a) images). On the right hand side you can see and modify the slice shown; and see details of the node and any associated attributes.
-
-#### **Images**
-
-- To display an image of a particular node, click the image icon on the toolbar at the top of the window. This will open an Image tab at the current node.
-- You can have several Image tabs open at once.
-- Image tabs remember the node and slice if you switch to a different tab and back.
-- Switching to a different node results in the default rendering behaviour for the image.
-
-The default image rendering is as follows: 
-* Greyscale: if the node has two or more dimensions and the shape of the last dimension is greater than 4. The image is initially taken from the last two dimensions of the node. A scrollbar is provided, which currently can be used to scroll through the first dimension of the node. This is useful for viewing a stack of greyscale images. You can alternatively change the slice manually and the scrollbar will move accordingly.
-
-* rgb or rgba: if the node has three or more dimensions and the shape of the last dimension is three or four. If the node has more than three dimensions, a scrollbar is provided, which can be used to scroll through the first dimension. This is useful for a stack of rgb or rgba images, for example.
-
-
-#### **Plots**
-
-**Plotting a single column of data against the index**
-
-- Click the plot icon on the toolbar at the top of the window to open a Plot tab at the current node. This will generate a default plot for the node selected showing the data plotted against the index (similar to row number).
-- You can have several Plot tabs open at once.
-- Plot tabs remember the node and slice if you switch to a different tab and back.
-- Switching to a different node results in the default rendering behaviour for the plot.
-
-The defaults for various node shapes are as follows:
-* 1D node: all the data are plotted against the index, Slice: `:`
-* 1D node with compound names: the data in the first column are plotted, Slice `:, 0`.
-* 2D node: all the rows of the first column are plotted, Slice `:, 0`
-* \>2D node where the last dimension has shape 3 or 4: here we assume that the data are rgb(a) images and plot as default all the rows of the -3rd axis in the first column of the -2nd axis and the first column of the -1st axis (red channel), last 3 axes of Slice `:, 0, 0`.
-* other \>2D nodes: we plot as default all the rows of the -2nd axis in the first column of the -1st axis, last 2 axes of Slice `:, 0`.
-
-<br>
-
-**Changing the plot**
-
-- Select the Slice accordingly *e.g.* to plot all the rows of the third column of data in a 2D dataset, change the Slice from the default `:, 0` to `:, 2`.
-- You can also slice in the first dimension *e.g.* to plot the first 10 rows of the third column of data in a 2D dataset, set the Slice to `:10, 2`.
-
-**Plotting two columns of data against each other**
-
-The Slice table can be used to select two columns to be plotted against each other instead of plotting a single column of data against the index. The axis labels in the plot are updated accordingly. As an example, to plot all the rows of the first two columns of data in a 2D node against each other, set the slice to `:, :2`.
+- the [table tab](https://tgwoodcock.github.io/hdf5view/user/table_tab.html)
+- the [image tab](https://tgwoodcock.github.io/hdf5view/user/image_tab.html) and
+- the [plot tab](https://tgwoodcock.github.io/hdf5view/user/plot_tab.html) to view your data.
 
 <br>
 
@@ -274,6 +82,10 @@ Currently there are no unit tests for this package. The gui has been tested with
 If there are any issues, please feel free to use the [issues mechanism on github](https://github.com/tgwoodcock/hdf5view/issues) to get in touch.
 
 <br>
+
+## **6. Contributing**
+
+If you are intersted in contributing to the hdf5view project, please see the [contributing guide](https://tgwoodcock.github.io/hdf5view/dev/index.html).
 
 ## TODO:
 
