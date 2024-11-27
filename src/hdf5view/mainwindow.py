@@ -11,8 +11,10 @@ from qtpy.QtCore import (
     QRect,
     QSettings,
     Qt,
+    QUrl,
 )
 from qtpy.QtGui import (
+    QDesktopServices,
     QIcon,
     QKeySequence,
 )
@@ -115,6 +117,15 @@ class MainWindow(QMainWindow):
             triggered=self.handle_open_about,
         )
 
+        self.docs_action = QAction(
+            QIcon("icons:hdf5view.ico"),
+            "&hdf5view documentation",
+            self,
+            statusTip="hdf5view docs",
+            triggered=self.handle_open_docs,
+            shortcut=QKeySequence.HelpContents,
+        )
+
         #
         # Plot/image actions
         #
@@ -165,6 +176,7 @@ class MainWindow(QMainWindow):
 
         # Help menu
         self.help_menu = menu.addMenu("&Help")
+        self.help_menu.addAction(self.docs_action)
         self.help_menu.addAction(self.about_action)
 
     def init_toolbars(self):
@@ -400,6 +412,12 @@ class MainWindow(QMainWindow):
                 "<p>Copyright(c) 2019 - Martin Swarbrick</p>"
             ),
         )
+
+    def handle_open_docs(self):
+        """Link to the hdf5view documentation."""
+        url = QUrl("https://tgwoodcock.github.io/hdf5view")
+        if not QDesktopServices.openUrl(url):
+            QMessageBox.warning(self, "Open Url", "Could not open docs")
 
     def handle_tree_selection_changed(self):
         """
