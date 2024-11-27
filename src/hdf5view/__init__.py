@@ -1,3 +1,3 @@
 """hdf5view: a simple viewer for HDF5 files."""
 
-__version__ = "0.2.dev0"
+__version__ = "0.2.0"
