@@ -15,3 +15,4 @@ If you would like to contribute code, such as fixing a bug or adding a new featu
    installing_a_development_environment
    code_style
    using_git
+   contribution_credits

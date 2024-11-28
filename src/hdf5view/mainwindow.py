@@ -4,6 +4,7 @@ application window.
 """
 
 import os
+from datetime import datetime
 
 import h5py
 from qtpy import API_NAME
@@ -404,12 +405,22 @@ class MainWindow(QMainWindow):
 
     def handle_open_about(self):
         """Show the about dialog."""
+        y = datetime.now().year
+        url1 = "https://github.com/tgwoodcock/hdf5view/graphs/contributors"
+        url2 = "https://github.com/tgwoodcock/hdf5view/blob/main/LICENSE"
+        url3 = "https://github.com/tgwoodcock/hdf5view/blob/main/CITATION.cff"
+        url4 = "https://github.com/tgwoodcock/hdf5view"
+        s1 = "The hdf5view Developers"
+        s2 = "Distributed under the terms of the"
         QMessageBox.about(
             self,
             f"About {WINDOW_TITLE}",
             (
-                f"<p>HDF5View {__version__}</p>"
-                "<p>Copyright(c) 2019 - Martin Swarbrick</p>"
+                f"<p>hdf5view {__version__}</p>"
+                f"<p>Copyright(c) 2019-{y} <a href={url1}>{s1}</a></p>"
+                f"<p>{s2} <a href={url2}>MIT License</a></p>"
+                f"<p>Citation metadata: <a href={url3}>CITATION.cff</a></p>"
+                f"<p>Source code: <a href={url4}>github repository</a></p>"
             ),
         )
 

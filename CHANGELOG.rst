@@ -26,6 +26,22 @@ its best to adhere to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>
    Fixed
    -----
 
+0.2.1 (2024-11-28)
+==================
+
+Added
+-----
+
+- CITATION.cff to record contribution credits and hold metadata for citations. See `Citation File Format (CFF) <https://citation-file-format.github.io/>`_ for further information. The collective term ``The hdf5view Developers`` has been defined, which includes all contributors to hdf5view as shown in the 
+  `contributors graph of the repository <https://github.com/tgwoodcock/hdf5view/graphs/contributors>`_.
+- Pre-commit hook to ensure that the CITATION.cff is correctly formatted.
+
+Changed
+-------
+
+- Updated the documentation so that the new method of recording package credits is explained in the Contributing guide.
+- Updated the LICENSE file and ``About...`` entry in the ``Help`` menu of the application to reflect the new method of recording package credits.
+
 0.2.0 (2024-11-25)
 ==================
 
