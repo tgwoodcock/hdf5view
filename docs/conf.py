@@ -9,7 +9,7 @@ import hdf5view
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "hdf5view"
-author = "hdf5view developers"
+author = "The hdf5view Developers"
 copyright = f"2019-%Y, {author}"
 release = hdf5view.__version__
 version = hdf5view.__version__

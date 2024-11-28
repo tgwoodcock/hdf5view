@@ -170,6 +170,9 @@
         MainWindow.handle_open_about
         
         
+        MainWindow.handle_open_docs
+        
+        
         MainWindow.handle_open_file
         
         
