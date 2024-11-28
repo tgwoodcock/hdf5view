@@ -4,10 +4,15 @@ repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
   rev: v5.0.0
   hooks:
-  - id: check-merge-conflict  # checks for files that contain merge conflict strings
-  - id: check-toml  # checks toml files for parseable syntax
-  - id: debug-statements  # checks for debugger imports and py37+ `breakpoint()` calls in python source
+    - id: check-merge-conflict  # checks for files that contain merge conflict strings
+    - id: check-toml  # checks toml files for parseable syntax
+    - id: debug-statements  # checks for debugger imports and py37+ `breakpoint()` calls in python source
 
+- repo: https://github.com/citation-file-format/cffconvert
+  rev: 054bda51dbe278b3e86f27c890e3f3ac877d616c
+  hooks:
+    - id: validate-cff
+      
 - repo: https://github.com/astral-sh/ruff-pre-commit
   rev: v0.7.4
   hooks:
