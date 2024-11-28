@@ -9,6 +9,7 @@ authors:
     website: "https://github.com/tgwoodcock/hdf5view/graphs/contributors"
 cff-version: 1.2.0
 date-released: "2024-11-28"
+doi: 10.5281/zenodo.14236673
 keywords:
   - research
   - data
@@ -20,4 +21,4 @@ license: MIT
 message: "Please use these metadata in any citations of the software."
 repository-code: "https://github.com/tgwoodcock/hdf5view"
 title: "hdf5view"
-version: 0.2.1
+version: 0.2.2

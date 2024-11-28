@@ -26,6 +26,14 @@ its best to adhere to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>
    Fixed
    -----
 
+0.2.2 (2024-11-28)
+==================
+
+Changed
+-------
+
+- Added Zenodo doi to CITATION.cff
+
 0.2.1 (2024-11-28)
 ==================
 
