@@ -1,3 +1,4 @@
+abstract: "HDF5View is a simple Qt/Python based viewer for HDF5 files."
 authors:
   - family-names: Swarbrick
     given-names: Martin
