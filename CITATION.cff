@@ -1,4 +1,4 @@
-abstract: "HDF5View is a simple Qt/Python based viewer for HDF5 files."
+abstract: "hdf5view is a simple Qt/Python based viewer for HDF5 files."
 authors:
   - family-names: Swarbrick
     given-names: Martin
@@ -9,17 +9,17 @@ authors:
   - name: The hdf5view Developers
     website: "https://github.com/tgwoodcock/hdf5view/graphs/contributors"
 cff-version: 1.2.0
-date-released: "2024-11-28"
+date-released: "2025-02-11"
 doi: 10.5281/zenodo.14236673
 keywords:
   - research
   - data
-  - plantuml
-  - chada
-  - moda
-  - workflow
+  - management
+  - visualization
+  - hdf5
+  - viewer
 license: MIT
-message: "Please use these metadata in any citations of the software."
+message: "If you would like to cite this code, please do so using these metadata."
 repository-code: "https://github.com/tgwoodcock/hdf5view"
 title: "hdf5view"
-version: 0.2.2
+version: 0.2.3

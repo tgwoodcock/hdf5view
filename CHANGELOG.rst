@@ -26,6 +26,14 @@ its best to adhere to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>
    Fixed
    -----
 
+0.2.3 (2025-02-11)
+==================
+
+Fixed
+-----
+
+- Rendering of datasets with ndim == 0 in the TableView.
+
 0.2.2 (2024-11-28)
 ==================
 

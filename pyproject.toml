@@ -4,10 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hdf5view"
-description = 'HDF5View is a python based HDF5 file viewer built on PyQt5/PySide2/PyQt6/PySide6, QtPy, h5py and pyqtgraph.'
+description = 'hdf5view is a python based HDF5 file viewer built on PyQt5/PySide2/PyQt6/PySide6, QtPy, h5py and pyqtgraph.'
 authors = [
     {name = "Martin Swarbrick"},
     {name = "Thomas G. Woodcock"},
+	{name = "The hdf5view Developers"},
 ]
 maintainers = [{name = "Thomas G. Woodcock"},]
 license = {file = "LICENSE"}
@@ -48,6 +49,7 @@ dynamic = ["version"]
 
 [project.optional-dependencies]
 doc = [
+    "matplotlib",
     "nbsphinx                     >= 0.7",
     "numpydoc",
     "pydata-sphinx-theme",
