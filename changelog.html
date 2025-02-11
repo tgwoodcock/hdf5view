@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Changelog &#8212; hdf5view 0.2.2 documentation</title>
+    <title>Changelog &#8212; hdf5view 0.2.3 documentation</title>
   
   
   
@@ -42,7 +42,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=1c17f339"></script>
+    <script src="_static/documentation_options.js?v=b557875f"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -56,7 +56,7 @@
     <link rel="prev" title="verticalOffset" href="reference/generated/hdf5view.views.PlotView.verticalOffset.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.2.2" />
+  <meta name="docsearch:version" content="0.2.3" />
   </head>
   
   
@@ -386,7 +386,16 @@
 on <a class="reference external" href="https://keepachangelog.com/en/1.1.0">Keep a Changelog</a>, and this project tries
 its best to adhere to <a class="reference external" href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <section id="id2">
-<h2>0.2.2 (2024-11-28)<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<h2>0.2.3 (2025-02-11)<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<section id="fixed">
+<h3>Fixed<a class="headerlink" href="#fixed" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Rendering of datasets with ndim == 0 in the TableView.</p></li>
+</ul>
+</section>
+</section>
+<section id="id3">
+<h2>0.2.2 (2024-11-28)<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
 <section id="changed">
 <h3>Changed<a class="headerlink" href="#changed" title="Link to this heading">#</a></h3>
 <ul class="simple">
@@ -394,8 +403,8 @@ its best to adhere to <a class="reference external" href="https://semver.org/spe
 </ul>
 </section>
 </section>
-<section id="id3">
-<h2>0.2.1 (2024-11-28)<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<section id="id4">
+<h2>0.2.1 (2024-11-28)<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
 <section id="added">
 <h3>Added<a class="headerlink" href="#added" title="Link to this heading">#</a></h3>
 <ul class="simple">
@@ -404,25 +413,25 @@ its best to adhere to <a class="reference external" href="https://semver.org/spe
 <li><p>Pre-commit hook to ensure that the CITATION.cff is correctly formatted.</p></li>
 </ul>
 </section>
-<section id="id4">
-<h3>Changed<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<section id="id5">
+<h3>Changed<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Updated the documentation so that the new method of recording package credits is explained in the Contributing guide.</p></li>
 <li><p>Updated the LICENSE file and <code class="docutils literal notranslate"><span class="pre">About...</span></code> entry in the <code class="docutils literal notranslate"><span class="pre">Help</span></code> menu of the application to reflect the new method of recording package credits.</p></li>
 </ul>
 </section>
 </section>
-<section id="id5">
-<h2>0.2.0 (2024-11-25)<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
 <section id="id6">
-<h3>Added<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<h2>0.2.0 (2024-11-25)<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
+<section id="id7">
+<h3>Added<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Documentation, built using Sphinx and the PyData theme.</p></li>
 <li><p>Pre-commit linting and formatting using ruff. The file .pre-commit-config-yaml has been added to the top level. Users can install the hooks locally with <code class="docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">install</span></code>. All staged changes are then passed through the ruff linter and formatter according to the sets of rules used. See the guide to <a class="reference internal" href="dev/code_style.html#code-style"><span class="std std-ref">Code style</span></a> and pyproject.toml for further details.</p></li>
 </ul>
 </section>
-<section id="id7">
-<h3>Changed<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<section id="id8">
+<h3>Changed<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>removed a line of code from hdf5view/views.py, which was causing problems on macOS. (<a class="reference external" href="https://github.com/tgwoodcock/hdf5view/issues/12">#12</a>)</p></li>
 <li><p>removed import of QVariant. This caused problems with PySide6 as it is obsolete. None can be returned instead of an invalid QVariant. This is now done in several functions. (<a class="reference external" href="https://github.com/tgwoodcock/hdf5view/issues/13">#13</a>)</p></li>
@@ -470,18 +479,22 @@ its best to adhere to <a class="reference external" href="https://semver.org/spe
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">0.2.2 (2024-11-28)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">0.2.3 (2025-02-11)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fixed">Fixed</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">0.2.2 (2024-11-28)</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#changed">Changed</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">0.2.1 (2024-11-28)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">0.2.1 (2024-11-28)</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#added">Added</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Changed</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Changed</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">0.2.0 (2024-11-25)</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Added</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Changed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">0.2.0 (2024-11-25)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Added</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Changed</a></li>
 </ul>
 </li>
 </ul>
