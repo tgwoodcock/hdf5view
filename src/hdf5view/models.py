@@ -425,7 +425,7 @@ class DataTableModel(QAbstractTableModel):
             if self.ndim == 0:
                 try:
                     q = self.data_view.decode()
-                except TypeError:
+                except (AttributeError, TypeError):
                     q = str(self.data_view)
             else:
                 if self.data_view.ndim == 0:
