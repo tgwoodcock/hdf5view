@@ -85,7 +85,7 @@ If there are any issues, please feel free to use the [issues mechanism on github
 
 ## **6. Contributing**
 
-If you are intersted in contributing to the hdf5view project, please see the [contributing guide](https://tgwoodcock.github.io/hdf5view/dev/index.html).
+If you are interested in contributing to the hdf5view project, please see the [contributing guide](https://tgwoodcock.github.io/hdf5view/dev/index.html).
 
 ## TODO:
 
