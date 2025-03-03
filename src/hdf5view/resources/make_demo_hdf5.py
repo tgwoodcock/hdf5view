@@ -88,7 +88,7 @@ def make_demo_hdf5():
 
         # hdf5view logo (single rgba image)
         file1["/hdf5view logo"] = np.array(
-            Image.open(r"images\hdf5view.ico"), dtype=np.uint8
+            Image.open(pathlib.Path(r"images/hdf5view.png")), dtype=np.uint8
         )
 
 
