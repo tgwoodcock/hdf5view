@@ -26,6 +26,27 @@ its best to adhere to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>
    Fixed
    -----
 
+0.2.4 (2025-03-06)
+==================
+
+Added
+-----
+
+- Added a link to the ``Zenodo`` record for ``hdf5view`` to the ``About...`` dialog in the application.
+
+Changed
+-------
+
+- The widths of the columns in the ``File Structure`` table now automatically fit to their contents for easier viewing.
+- Single-column datasets on the ``Table`` tab now automatically fit the width to the contents.
+- Multi-column datasets on the ``Table`` tab have a fixed column width that can be adjusted by the user.
+
+Fixed
+-----
+
+- ``resources/make_demo_hdf5.py`` All paths are now pathlib.Path so it should be platform-independent.
+- ``resources/make_demo_hdf5.py`` Added a .png image of the ``hdf5view`` logo to avoid an error being thrown by PIL when reading a .ico file.
+
 0.2.3 (2025-02-11)
 ==================
 

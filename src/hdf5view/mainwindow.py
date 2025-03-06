@@ -410,6 +410,7 @@ class MainWindow(QMainWindow):
         url2 = "https://github.com/tgwoodcock/hdf5view/blob/main/LICENSE"
         url3 = "https://github.com/tgwoodcock/hdf5view/blob/main/CITATION.cff"
         url4 = "https://github.com/tgwoodcock/hdf5view"
+        url5 = "https://doi.org/10.5281/zenodo.14236673"
         s1 = "The hdf5view Developers"
         s2 = "Distributed under the terms of the"
         QMessageBox.about(
@@ -420,7 +421,8 @@ class MainWindow(QMainWindow):
                 f"<p>Copyright(c) 2019-{y} <a href={url1}>{s1}</a></p>"
                 f"<p>{s2} <a href={url2}>MIT License</a></p>"
                 f"<p>Citation metadata: <a href={url3}>CITATION.cff</a></p>"
-                f"<p>Source code: <a href={url4}>github repository</a></p>"
+                f"<p>Source code development: <a href={url4}>github repository</a></p>"
+                f"<p>Source code archive: <a href={url5}>Zenodo record</a></p>"
             ),
         )
 

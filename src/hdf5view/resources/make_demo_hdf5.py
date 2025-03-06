@@ -50,7 +50,8 @@ def make_demo_hdf5():
         d2.attrs["x unit"] = "degrees"
 
         # string
-        d3 = file1.create_dataset("/str", data=b"this is a string")
+        s1 = b"This is a very long string, much wider than one column of numbers."
+        d3 = file1.create_dataset("/str", data=s1)
         d3.attrs["Weather"] = "sunny"
         d3.attrs["number"] = 42
 
