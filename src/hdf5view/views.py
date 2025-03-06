@@ -68,8 +68,7 @@ class HDF5Widget(QWidget):
         self.tree_view.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.tree_view.setModel(self.tree_model)
 
-        self.tree_view.header().setSectionResizeMode(0, QHeaderView.Interactive)
-        self.tree_view.header().resizeSection(0, 160)
+        self.tree_view.header().setSectionResizeMode(0, QHeaderView.ResizeToContents)
         self.tree_view.header().setSectionResizeMode(1, QHeaderView.ResizeToContents)
         self.tree_view.header().setStretchLastSection(True)
 
@@ -96,6 +95,7 @@ class HDF5Widget(QWidget):
 
         # Setup main data table view
         self.data_view = QTableView()
+        self.dv_dss = self.data_view.horizontalHeader().defaultSectionSize()
         self.data_view.setModel(self.data_model)
 
         # Setup tabs
@@ -196,6 +196,8 @@ class HDF5Widget(QWidget):
                 self.tree_view.setCurrentIndex(index)
                 self.tree_view.selectionModel().blockSignals(False)
                 return
+        else:
+            return
 
         self.attrs_model.update_node(path)
         self.attrs_view.scrollToTop()
@@ -208,21 +210,55 @@ class HDF5Widget(QWidget):
         )
         self.dims_view.scrollToTop()
 
-        self.data_model.update_node(path)
-        self.data_view.scrollToTop()
-
-        self.image_model.update_node(path)
-
-        self.plot_model.update_node(path)
-
         id_cw = id(self.tabs.currentWidget())
         self.tab_dims[id_cw] = list(self.dims_model.shape)
         self.tab_node[id_cw] = index
 
-        if isinstance(self.tabs.currentWidget(), ImageView):
+        if isinstance(self.tabs.currentWidget(), QTableView):
+            md_0 = self.data_view.horizontalHeader().sectionResizeMode(0)
+            node = self.hdf[path]
+            compound_names = node.dtype.names
+            if isinstance(compound_names, type(None)):
+                if node.ndim in [0, 1]:
+                    size_crit = node.size
+                    ncols = 1
+                elif node.ndim == 2:
+                    size_crit = node.size
+                    ncols = node.shape[1]
+                elif node.ndim > 2 and node.shape[-1] in [3, 4]:
+                    size_crit = node.shape[-3] * node.shape[-2] * node.shape[-1]
+                    ncols = node.shape[-2]
+                else:
+                    size_crit = node.shape[-2] * node.shape[-1]
+                    ncols = node.shape[-1]
+            else:
+                ncols = len(compound_names)
+                size_crit = node.shape[0] * ncols
+
+            if size_crit < 5000 and ncols == 1:
+                self.data_model.update_node(path)
+                if md_0 != 3:
+                    self.data_view.horizontalHeader().setSectionResizeMode(
+                        QHeaderView.ResizeToContents
+                    )
+                self.data_view.resizeColumnsToContents()
+            else:
+                if md_0 != 0:
+                    self.data_view.horizontalHeader().setSectionResizeMode(
+                        QHeaderView.Interactive
+                    )
+                    for i in range(self.data_view.horizontalHeader().count()):
+                        self.data_view.horizontalHeader().resizeSection(i, self.dv_dss)
+                self.data_model.update_node(path)
+
+            self.data_view.scrollToTop()
+
+        elif isinstance(self.tabs.currentWidget(), ImageView):
+            self.image_model.update_node(path)
             self.image_views[id_cw].update_image()
 
-        if isinstance(self.tabs.currentWidget(), PlotView):
+        elif isinstance(self.tabs.currentWidget(), PlotView):
+            self.plot_model.update_node(path)
             self.plot_views[id_cw].update_plot()
 
     def handle_tab_changed(self):
@@ -264,7 +300,7 @@ class HDF5Widget(QWidget):
         self.tabs.blockSignals(False)
 
     def add_plot(self):
-        """Add a tab to view an plot of a dataset in the hdf5 file."""
+        """Add a tab to view a plot of a dataset in the hdf5 file."""
         c_index = self.tab_node[id(self.tabs.currentWidget())]
         path = self.tree_model.itemFromIndex(c_index).data(Qt.UserRole)
         self.dims_model.update_node(path, now_on_PlotView=True)
