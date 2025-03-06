@@ -87,6 +87,20 @@ If there are any issues, please feel free to use the [issues mechanism on github
 
 If you are interested in contributing to the hdf5view project, please see the [contributing guide](https://tgwoodcock.github.io/hdf5view/dev/index.html).
 
+<br>
+
+## **7. Changes**
+
+To see the what has changed in the current version of hdf5view, please have a look at the [changelog](https://tgwoodcock.github.io/hdf5view/changelog.html).
+
+<br>
+
+## **8. Reference**
+
+hdf5view is archived on Zenodo and can be cited using the following doi and associated metadata: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14236673.svg)](https://doi.org/10.5281/zenodo.14236673)
+
+<br>
+
 ## TODO:
 
 * Implement dynamic loading for files larger than the available memory
