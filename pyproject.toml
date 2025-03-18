@@ -122,4 +122,4 @@ version = {attr = "hdf5view.__version__"}
 where = ["src"]
 
 [tool.setuptools.package-data]
-"hdf5view.resources.images" = ["*.svg", "*.ico"]
+"hdf5view.resources.images" = ["*.svg", "*.ico", "*.png"]

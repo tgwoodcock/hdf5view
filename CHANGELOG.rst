@@ -26,6 +26,14 @@ its best to adhere to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>
    Fixed
    -----
 
+0.2.5 (2025-03-18)
+==================
+
+Fixed
+-----
+
+- Ensured resources/images/hdf5view.png is packaged with the source code.
+
 0.2.4 (2025-03-06)
 ==================
 
