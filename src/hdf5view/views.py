@@ -182,8 +182,9 @@ class HDF5Widget(QWidget):
         index = selected.indexes()[0]
 
         path = self.tree_model.itemFromIndex(index).data(Qt.UserRole)
-
-        if isinstance(self.hdf[path], h5py.Dataset):
+        is_path_dataset = isinstance(self.hdf[path], h5py.Dataset)
+        
+        if is_path_dataset:
             memory_ratio = self.calculate_memory_ratio(path)
             continue_loading = self.check_node_size(memory_ratio, path)
             if not continue_loading:
@@ -196,8 +197,6 @@ class HDF5Widget(QWidget):
                 self.tree_view.setCurrentIndex(index)
                 self.tree_view.selectionModel().blockSignals(False)
                 return
-        else:
-            return
 
         self.attrs_model.update_node(path)
         self.attrs_view.scrollToTop()
@@ -213,6 +212,9 @@ class HDF5Widget(QWidget):
         id_cw = id(self.tabs.currentWidget())
         self.tab_dims[id_cw] = list(self.dims_model.shape)
         self.tab_node[id_cw] = index
+
+        if not is_path_dataset:
+            return
 
         if isinstance(self.tabs.currentWidget(), QTableView):
             md_0 = self.data_view.horizontalHeader().sectionResizeMode(0)
