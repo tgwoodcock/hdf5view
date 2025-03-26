@@ -26,6 +26,20 @@ its best to adhere to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>
    Fixed
    -----
 
+0.2.6 (2025-03-26)
+==================
+
+Fixed
+-----
+
+- Displaying group attributes properly. After an `earlier commit <https://github.com/tgwoodcock/hdf5view/commit/1e1bde078f744c119e14f7a3f7a24d7ad9f3bd24>`_, dataset attributes were properly displayed but group attributes were not. This has now been fixed (`#19 <https://github.com/tgwoodcock/hdf5view/issues/19>`_ and `#20 <https://github.com/tgwoodcock/hdf5view/pull/20>`_).
+
+Changed
+-------
+
+- build now requires setuptools>=77.
+- description of license and license-files in pyproject.toml now conforms to `PEP 639 <https://peps.python.org/pep-0639/>`_, as recommended `here <https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license>`_. The obsolete classifier for the license has been removed.
+
 0.2.5 (2025-03-18)
 ==================
 
