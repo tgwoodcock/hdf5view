@@ -48,7 +48,7 @@ def main():
     parser.add_argument(
         "--version", action="version", version=f"%(prog)s {__version__}"
     )
-    parser.add_argument("-f", "--file", type=str, required=False)
+    parser.add_argument("-f", "--file", type=str, required=False, action="append")
     args = parser.parse_args()
 
     if qtpy.API_NAME in ["PyQt5", "PySide2"]:
@@ -63,9 +63,10 @@ def main():
     window = MainWindow(app)
     window.show()
 
-    # Open a file if supplied on command line
+    # Open files if supplied on command line
     if args.file:
-        window.open_file(args.file)
+        for file in args.file:
+            window.open_file(file)
 
     sys.exit(app.exec_())
 
