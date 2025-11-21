@@ -22,7 +22,6 @@ from qtpy.QtWidgets import (
 
 os.environ["PYQTGRAPH_QT_LIB"] = qtpy.API_NAME
 
-from . import __version__
 from .mainwindow import MainWindow
 
 # def my_excepthook(e_type, value, tb):
@@ -45,9 +44,6 @@ qtpy.QtCore.QDir.addSearchPath("icons", resource_path)
 def main():
     """Define the main application entry point (cli)."""
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--version", action="version", version=f"%(prog)s {__version__}"
-    )
     parser.add_argument("-f", "--file", type=str, required=False, action="append")
     args = parser.parse_args()
 
