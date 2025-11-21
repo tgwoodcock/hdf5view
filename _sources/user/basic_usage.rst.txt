@@ -27,11 +27,17 @@ With hdf5view you can either:
       
 	     hdf5view
    
-      or you can open a file directly using
+      You can open a file directly using
    
       .. code-block:: shell
    
          hdf5view -f <path/to/my/hdf5file>
+
+      Or you can open several files in one window by repeating the "-f" flag:
+   
+      .. code-block:: shell
+   
+         hdf5view -f <path/to/first_hdf5file> -f <path/to/second_hdf5file>
 
 |
 
