@@ -26,6 +26,20 @@ its best to adhere to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>
    Fixed
    -----
 
+0.2.7 (2025-11-21)
+==================
+
+Added
+-----
+
+- Possibility to open several files in one window from the command line (PR `#21 <https://github.com/tgwoodcock/hdf5view/pull/21>`_).
+
+Fixed
+-----
+
+- Removed the "version" argument from the command line interface. This did not work as it is a gui-script, not a console script.
+
+
 0.2.6 (2025-03-26)
 ==================
 
@@ -91,7 +105,7 @@ Changed
 Added
 -----
 
-- CITATION.cff to record contribution credits and hold metadata for citations. See `Citation File Format (CFF) <https://citation-file-format.github.io/>`_ for further information. The collective term ``The hdf5view Developers`` has been defined, which includes all contributors to hdf5view as shown in the 
+- CITATION.cff to record contribution credits and hold metadata for citations. See `Citation File Format (CFF) <https://citation-file-format.github.io/>`_ for further information. The collective term ``The hdf5view Developers`` has been defined, which includes all contributors to hdf5view as shown in the
   `contributors graph of the repository <https://github.com/tgwoodcock/hdf5view/graphs/contributors>`_.
 - Pre-commit hook to ensure that the CITATION.cff is correctly formatted.
 
